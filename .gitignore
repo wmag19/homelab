@@ -1,0 +1,7 @@
+*.conf
+*.key
+*.cert
+*.pem
+*.crt
+*.ca
+
