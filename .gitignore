@@ -1,4 +1,5 @@
-*.conf
+*.env*
+*.env
 *.key
 *.cert
 *.pem
