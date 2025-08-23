@@ -12,9 +12,18 @@
   "helm-values": {
     "enabled": false
   },
+  "regexManagers": [
+    {
+      "fileMatch": ["^manifests/applicationsets\\.yaml$"],
+      "matchStrings": [
+        "- chart: (?<depName>[^\\s]+)\\s+repoURL: (?<registryUrl>[^\\s]+)\\s+version: \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
   "packageRules": [
     {
-      "matchManagers": ["argocd"],
+      "matchManagers": ["argocd", "regex"],
       "matchDatasources": ["helm"],
       "groupName": "helm-charts",
       "commitMessageTopic": "Helm chart {{depName}}",
