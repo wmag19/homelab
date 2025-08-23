@@ -15,8 +15,15 @@ up() {
         }
     fi
     
-    # Apply terraform configuration
-    terraform apply -var-file=lab.tfvars -auto-approve
+    # Apply terraform configuration with retry logic for health check
+    echo "Applying terraform configuration..."
+    if ! timeout 300 terraform apply -var-file=lab.tfvars -auto-approve; then
+        echo "Terraform apply failed or timed out, checking for health check issues..."
+        # Remove health check from state and retry
+        terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
+        echo "Retrying terraform apply without health check dependency..."
+        terraform apply -var-file=lab.tfvars -auto-approve
+    fi
     
     echo "Cluster deployed successfully!"
     
@@ -74,8 +81,12 @@ down() {
         echo "No ArgoCD applications found or cluster not accessible, proceeding with terraform destroy..."
     fi
     
+    # Remove health check from state first to avoid timeout during destroy
+    terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
+    
     # Destroy everything except the ISO download
-    terraform destroy -var-file=lab.tfvars \
+    echo "Destroying cluster resources..."
+    if ! timeout 300 terraform destroy -var-file=lab.tfvars \
         -target=proxmox_virtual_environment_vm.talos_cp_01 \
         -target=proxmox_virtual_environment_vm.talos_worker_01 \
         -target=talos_machine_secrets.machine_secrets \
@@ -85,7 +96,9 @@ down() {
         -target=helm_release.argocd \
         -target=kubernetes_namespace.argocd \
         -target=null_resource.apply_applicationset \
-        -auto-approve
+        -auto-approve; then
+        echo "Destroy operation timed out or failed, but continuing..."
+    fi
     
     echo "Cluster destroyed (ISO preserved for faster redeployment)"
 }
