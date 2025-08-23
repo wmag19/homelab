@@ -30,6 +30,7 @@ renovate:
       "major": {
         "enabled": true
       },
+      "prCreation": "immediate",
       "logLevel": "debug"
     }
 
