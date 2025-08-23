@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: homelab-apps
+  name: helm-apps
   namespace: argocd
 spec:
   generators:
@@ -37,6 +37,39 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: manifests
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/wmag19/homelab.git
+      revision: HEAD
+      directories:
+      - path: manifests/*
+      - path: manifests/values
+        exclude: true
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/wmag19/homelab.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
       syncPolicy:
         automated:
           prune: true

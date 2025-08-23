@@ -1,0 +1,60 @@
+renovate:
+  cronjob:
+    schedule: "0 2 * * *"  # Run daily at 2 AM
+    concurrencyPolicy: Forbid
+    successfulJobsHistoryLimit: 3
+    failedJobsHistoryLimit: 3
+  
+  image:
+    repository: renovate/renovate
+    tag: "37.440.7"
+  
+  # Configure Renovate behavior
+  config: |
+    {
+      "platform": "github",
+      "autodiscover": false,
+      "repositories": ["wmag19/homelab"],
+      "kubernetes": {
+        "fileMatch": ["\\.yaml$"]
+      },
+      "helm-values": {
+        "fileMatch": ["values\\.ya?ml$"]
+      },
+      "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+      "onboarding": false,
+      "requireConfig": "optional"
+    }
+
+  # Environment variables for GitHub integration
+  env:
+    RENOVATE_TOKEN:
+      secretName: renovate-secret
+      secretKey: token
+    LOG_LEVEL: info
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 1000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+# Security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+    - ALL
+
+# Pod security context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
