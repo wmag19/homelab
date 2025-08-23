@@ -1,5 +1,5 @@
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
     client_certificate     = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
     client_key             = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
@@ -62,7 +62,7 @@ resource "null_resource" "apply_applicationset" {
   }
 
   triggers = {
-    applicationset_hash = filemd5("${path.module}/../manifests/applicationset.yaml")
+    applicationset_hash = filemd5("${path.module}/../manifests/applicationsets.yaml")
   }
 }
 

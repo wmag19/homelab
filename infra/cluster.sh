@@ -5,6 +5,16 @@ set -e
 up() {
     echo "Bringing up Talos cluster..."
     
+    # Ensure SSH agent is running and key is loaded
+    if ! ssh-add -L >/dev/null 2>&1; then
+        echo "Starting SSH agent and adding key..."
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_ed25519 2>/dev/null || {
+            echo "Failed to add SSH key. Make sure ~/.ssh/id_ed25519 exists."
+            exit 1
+        }
+    fi
+    
     # Apply terraform configuration
     terraform apply -var-file=lab.tfvars -auto-approve
     
