@@ -5,23 +5,38 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - git:
-      repoURL: https://github.com/wmag19/homelab.git
-      revision: HEAD
-      directories:
-      - path: manifests/*
+  - list:
+      elements:
+      - chart: prometheus
+        repoURL: https://prometheus-community.github.io/helm-charts
+        version: "25.8.0"
+        namespace: monitoring
+      - chart: grafana
+        repoURL: https://grafana.github.io/helm-charts
+        version: "7.3.7"
+        namespace: monitoring
+      - chart: sealed-secrets
+        repoURL: https://charts.bitnami.com/bitnami/sealed-secrets
+        version: "2.5.19"
+        namespace: sealed-secrets
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{chart}}'
     spec:
       project: default
-      source:
-        repoURL: https://github.com/wmag19/homelab.git
+      sources:
+      - repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        targetRevision: '{{version}}'
+        helm:
+          valueFiles:
+          - $values/values/{{chart}}.yaml
+      - repoURL: https://github.com/wmag19/homelab.git
         targetRevision: HEAD
-        path: '{{path}}'
+        ref: values
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
