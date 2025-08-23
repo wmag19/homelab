@@ -1,15 +1,14 @@
+cronjob:
+  schedule: "0 2 * * *"  # Run daily at 2 AM
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+image:
+  repository: renovate/renovate
+  tag: "37.440.7"
+
 renovate:
-  cronjob:
-    schedule: "0 2 * * *"  # Run daily at 2 AM
-    concurrencyPolicy: Forbid
-    successfulJobsHistoryLimit: 3
-    failedJobsHistoryLimit: 3
-  
-  image:
-    repository: renovate/renovate
-    tag: "37.440.7"
-  
-  # Configure Renovate behavior
   config: |
     {
       "platform": "github",
@@ -26,15 +25,8 @@ renovate:
       "requireConfig": "optional"
     }
 
-  # Environment variables for GitHub integration
-  env:
-    - name: RENOVATE_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: renovate-secret
-          key: RENOVATE_TOKEN
-    - name: LOG_LEVEL
-      value: "info"
+# Use existing secret for environment variables
+existingSecret: renovate-secret
 
 # Resource limits and requests
 resources:
