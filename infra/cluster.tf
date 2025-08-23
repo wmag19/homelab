@@ -60,7 +60,7 @@ resource "talos_machine_bootstrap" "bootstrap" {
 }
 
 data "talos_cluster_health" "health" {
-  depends_on           = [talos_machine_configuration_apply.cp_config_apply, talos_machine_configuration_apply.worker_config_apply]
+  depends_on           = [talos_machine_bootstrap.bootstrap]
   client_configuration = data.talos_client_configuration.talosconfig.client_configuration
   control_plane_nodes  = [proxmox_virtual_environment_vm.talos_cp_01.ipv4_addresses[7][0]]
   worker_nodes         = [proxmox_virtual_environment_vm.talos_worker_01.ipv4_addresses[7][0]]
