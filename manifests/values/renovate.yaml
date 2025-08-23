@@ -17,7 +17,16 @@ renovate:
       "repositories": ["wmag19/homelab"],
       "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
       "onboarding": false,
-      "requireConfig": "optional"
+      "requireConfig": "optional",
+      "argocd": {
+        "fileMatch": ["\\.yaml$", "\\.yml$"]
+      },
+      "kubernetes": {
+        "fileMatch": ["\\.yaml$", "\\.yml$"]
+      },
+      "helm-values": {
+        "fileMatch": ["values\\.ya?ml$"]
+      }
     }
 
 # Use existing secret for environment variables
