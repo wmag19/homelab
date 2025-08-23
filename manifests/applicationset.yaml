@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/your-username/homelab.git
+      repoURL: https://github.com/wmag19/homelab.git
       revision: HEAD
       directories:
       - path: manifests/*
@@ -16,7 +16,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/your-username/homelab.git
+        repoURL: https://github.com/wmag19/homelab.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
