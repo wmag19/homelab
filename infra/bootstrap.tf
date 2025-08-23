@@ -43,52 +43,15 @@ resource "helm_release" "argocd" {
   ]
 }
 
-resource "kubernetes_manifest" "applicationset" {
+resource "null_resource" "apply_applicationset" {
   depends_on = [helm_release.argocd]
-  
-  manifest = {
-    apiVersion = "argoproj.io/v1alpha1"
-    kind       = "ApplicationSet"
-    metadata = {
-      name      = "homelab-apps"
-      namespace = "argocd"
-    }
-    spec = {
-      generators = [{
-        git = {
-          repoURL = "https://github.com/wmag19/homelab.git"
-          revision = "HEAD"
-          directories = [{
-            path = "manifests/*"
-          }]
-        }
-      }]
-      template = {
-        metadata = {
-          name = "{{path.basename}}"
-        }
-        spec = {
-          project = "default"
-          source = {
-            repoURL        = "https://github.com/your-username/homelab.git"
-            targetRevision = "HEAD"
-            path           = "{{path}}"
-          }
-          destination = {
-            server    = "https://kubernetes.default.svc"
-            namespace = "{{path.basename}}"
-          }
-          syncPolicy = {
-            automated = {
-              prune    = true
-              selfHeal = true
-            }
-            syncOptions = [
-              "CreateNamespace=true"
-            ]
-          }
-        }
-      }
-    }
+
+  provisioner "local-exec" {
+    command = "sleep 30 && kubectl apply -f ${path.module}/../manifests/applicationset.yaml"
+  }
+
+  triggers = {
+    applicationset_hash = filemd5("${path.module}/../manifests/applicationset.yaml")
   }
 }
+
