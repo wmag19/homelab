@@ -7,10 +7,6 @@ spec:
   generators:
   - list:
       elements:
-      - chart: prometheus
-        repoURL: https://prometheus-community.github.io/helm-charts
-        version: "25.8.0"
-        namespace: monitoring
       - chart: grafana
         repoURL: https://grafana.github.io/helm-charts
         version: "7.3.7"
