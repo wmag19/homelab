@@ -30,7 +30,12 @@ renovate:
       "major": {
         "enabled": true
       },
-      "prCreation": "immediate"
+      "prCreation": "immediate",
+      "registryAliases": {
+        "grafana": "https://grafana.github.io/helm-charts",
+        "bitnami": "https://charts.bitnami.com/bitnami",
+        "renovate": "https://docs.renovatebot.com/helm-charts"
+      }
     }
 
 # Environment variables from secret and additional config
