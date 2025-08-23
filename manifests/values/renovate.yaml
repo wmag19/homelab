@@ -36,6 +36,11 @@ renovate:
 # Use existing secret for environment variables
 existingSecret: renovate-secret
 
+# Additional environment variables
+env:
+  - name: LOG_LEVEL
+    value: "debug"
+
 # Resource limits and requests
 resources:
   limits:
