@@ -30,7 +30,39 @@ up() {
 }
 
 down() {
+    echo "⚠️  WARNING: This will destroy the Talos cluster and all applications!"
+    echo "This action cannot be undone."
+    echo
+    read -p "Are you sure you want to continue? (type 'yes' to confirm): " confirmation
+    
+    if [ "$confirmation" != "yes" ]; then
+        echo "Cluster shutdown cancelled."
+        return 1
+    fi
+    
     echo "Bringing down Talos cluster (preserving ISO)..."
+    
+    # Clean up ArgoCD applications first to prevent finalizer issues
+    echo "Cleaning up ArgoCD applications..."
+    if kubectl get apps -n argocd >/dev/null 2>&1; then
+        # Remove finalizers from all applications
+        for app in $(kubectl get apps -n argocd -o name 2>/dev/null); do
+            echo "Removing finalizers from $app"
+            kubectl patch "$app" -n argocd -p '{"metadata": {"finalizers": null}}' --type merge 2>/dev/null || true
+        done
+        
+        # Delete all applications
+        kubectl delete apps --all -n argocd --timeout=30s 2>/dev/null || true
+        
+        # Clean up applicationsets
+        for appset in $(kubectl get applicationsets -n argocd -o name 2>/dev/null); do
+            echo "Removing finalizers from $appset"
+            kubectl patch "$appset" -n argocd -p '{"metadata": {"finalizers": null}}' --type merge 2>/dev/null || true
+        done
+        kubectl delete applicationsets --all -n argocd --timeout=30s 2>/dev/null || true
+    else
+        echo "No ArgoCD applications found or cluster not accessible, proceeding with terraform destroy..."
+    fi
     
     # Destroy everything except the ISO download
     terraform destroy -var-file=lab.tfvars \
