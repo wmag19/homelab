@@ -1,11 +1,17 @@
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
+    host                   = yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
+    client_certificate     = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
+    client_key             = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
+    cluster_ca_certificate = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
   }
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  host                   = yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
+  client_certificate     = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
+  client_key             = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
+  cluster_ca_certificate = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
 }
 
 resource "kubernetes_namespace" "argocd" {

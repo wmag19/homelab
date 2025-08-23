@@ -40,6 +40,9 @@ down() {
         -target=talos_machine_configuration_apply.cp_config_apply \
         -target=talos_machine_configuration_apply.worker_config_apply \
         -target=talos_machine_bootstrap.bootstrap \
+        -target=helm_release.argocd \
+        -target=kubernetes_namespace.argocd \
+        -target=null_resource.apply_applicationset \
         -auto-approve
     
     echo "Cluster destroyed (ISO preserved for faster redeployment)"
