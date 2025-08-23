@@ -1,0 +1,6 @@
+pve_node_name="pve1"
+talos_worker_01_ip_addr = ""
+talos_cp_01_ip_addr = ""
+default_gateway="192.168.0.1"
+cluster_name="homelab"
+pve_endpoint="https://pve1:8006/"
