@@ -16,7 +16,7 @@ spec:
         version: "7.3.7"
         namespace: monitoring
       - chart: sealed-secrets
-        repoURL: https://charts.bitnami.com/bitnami/sealed-secrets
+        repoURL: https://charts.bitnami.com/bitnami
         version: "2.5.19"
         namespace: sealed-secrets
   template:
