@@ -33,13 +33,10 @@ renovate:
       "prCreation": "immediate"
     }
 
-# Use existing secret for environment variables
-existingSecret: renovate-secret
-
-# Additional environment variables
-env:
-  - name: LOG_LEVEL
-    value: "debug"
+# Environment variables from secret and additional config
+envFrom:
+  - secretRef:
+      name: renovate-secret
 
 # Resource limits and requests
 resources:
