@@ -15,6 +15,10 @@ spec:
         repoURL: https://charts.bitnami.com/bitnami
         version: "2.5.19"
         namespace: sealed-secrets
+      - chart: renovate
+        repoURL: https://docs.renovatebot.com/helm-charts
+        version: "43.15.0"
+        namespace: renovate
   template:
     metadata:
       name: '{{chart}}'
