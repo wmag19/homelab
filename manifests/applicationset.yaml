@@ -30,7 +30,7 @@ spec:
         targetRevision: '{{version}}'
         helm:
           valueFiles:
-          - $values/values/{{chart}}.yaml
+          - $values/manifests/values/{{chart}}.yaml
       - repoURL: https://github.com/wmag19/homelab.git
         targetRevision: HEAD
         ref: values
