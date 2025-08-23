@@ -5,6 +5,9 @@ cronjob:
   failedJobsHistoryLimit: 3
 
 image:
+  registry: ghcr.io
+  repository: renovatebot/renovate
+  tag: "41.76.0"
 
 renovate:
   config: |
