@@ -56,7 +56,7 @@ resource "null_resource" "apply_applicationset" {
     command = <<-EOT
       echo '${data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw}' > /tmp/kubeconfig-temp
       sleep 30
-      kubectl --kubeconfig=/tmp/kubeconfig-temp apply -f ${path.module}/../manifests/applicationset.yaml
+      kubectl --kubeconfig=/tmp/kubeconfig-temp apply -f ${path.module}/bootstrap-app.yaml
       rm /tmp/kubeconfig-temp
     EOT
   }
