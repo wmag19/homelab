@@ -21,9 +21,6 @@ renovate:
       "argocd": {
         "fileMatch": ["\\.yaml$", "\\.yml$"]
       },
-      "helm": {
-        "fileMatch": ["\\.yaml$", "\\.yml$"]
-      },
       "kubernetes": {
         "fileMatch": ["\\.yaml$", "\\.yml$"]
       },
