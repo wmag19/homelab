@@ -22,7 +22,7 @@ resource "kubernetes_namespace" "argocd" {
 
 resource "helm_release" "argocd" {
   depends_on = [kubernetes_namespace.argocd]
-  
+
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
@@ -41,7 +41,7 @@ resource "helm_release" "argocd" {
       }
       server = {
         service = {
-          type = "NodePort"
+          type         = "NodePort"
           nodePortHttp = 30080
         }
       }
@@ -53,7 +53,12 @@ resource "null_resource" "apply_applicationset" {
   depends_on = [helm_release.argocd]
 
   provisioner "local-exec" {
-    command = "sleep 30 && kubectl apply -f ${path.module}/../manifests/applicationset.yaml"
+    command = <<-EOT
+      echo '${data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw}' > /tmp/kubeconfig-temp
+      sleep 30
+      kubectl --kubeconfig=/tmp/kubeconfig-temp apply -f ${path.module}/../manifests/applicationset.yaml
+      rm /tmp/kubeconfig-temp
+    EOT
   }
 
   triggers = {
