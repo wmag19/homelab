@@ -5,8 +5,6 @@ cronjob:
   failedJobsHistoryLimit: 3
 
 image:
-  repository: renovate/renovate
-  tag: "37.440.7"
 
 renovate:
   config: |
@@ -14,12 +12,6 @@ renovate:
       "platform": "github",
       "autodiscover": false,
       "repositories": ["wmag19/homelab"],
-      "kubernetes": {
-        "fileMatch": ["\\.yaml$"]
-      },
-      "helm-values": {
-        "fileMatch": ["values\\.ya?ml$"]
-      },
       "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
       "onboarding": false,
       "requireConfig": "optional"
