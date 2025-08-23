@@ -30,8 +30,7 @@ renovate:
       "major": {
         "enabled": true
       },
-      "prCreation": "immediate",
-      "logLevel": "debug"
+      "prCreation": "immediate"
     }
 
 # Use existing secret for environment variables
