@@ -7,7 +7,7 @@ resource "proxmox_virtual_environment_vm" "talos_cp_01" {
 
   cpu {
     cores = 2
-    type = "x86-64-v2-AES"
+    type  = "x86-64-v2-AES"
   }
 
   memory {
@@ -50,7 +50,7 @@ resource "proxmox_virtual_environment_vm" "talos_cp_01" {
 }
 
 resource "proxmox_virtual_environment_vm" "talos_worker_01" {
-  depends_on = [ proxmox_virtual_environment_vm.talos_cp_01 ]
+  depends_on  = [proxmox_virtual_environment_vm.talos_cp_01]
   name        = "talos-worker-01"
   description = "Managed by Terraform"
   tags        = ["terraform"]
@@ -59,7 +59,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker_01" {
 
   cpu {
     cores = 4
-    type = "x86-64-v2-AES"
+    type  = "x86-64-v2-AES"
   }
 
   memory {
