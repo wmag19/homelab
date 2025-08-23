@@ -7,10 +7,10 @@ spec:
   generators:
   - list:
       elements:
-      # - chart: grafana
-      #   repoURL: https://grafana.github.io/helm-charts
-      #   version: "9.3.2"
-      #   namespace: test
+      - chart: grafana
+        repoURL: https://grafana.github.io/helm-charts
+        version: "9.3.2"
+        namespace: test
       - chart: sealed-secrets
         repoURL: https://charts.bitnami.com/bitnami
         version: "2.5.19"
