@@ -29,16 +29,6 @@ provider "registry.terraform.io/hashicorp/helm" {
   constraints = "~> 3.0"
   hashes = [
     "h1:+tHGl509bhyUrvvj9GQTBsdK+ImHJnRuo6ppDZPavqY=",
-    "h1:43oPMnemvwkZwjOUXJ26H2cY3GN7DL4Vsyr83+r2Tlo=",
-    "h1:5XKekNkSl6CKSebvB9lwDa6qC1oxYJKmWpL5YRuwu8M=",
-    "h1:6MuXzzpF+gSECNcAuKlfeVE5ANOAIij1k7Prle4qbuI=",
-    "h1:Br+l5VzzJcZ9GLD0iXGTTjLsSuBpXLveTGZSIRuZpcQ=",
-    "h1:KO2WWUKRSnAXKM8b1lxZlAuzXpnOkIgptuD/Shdz1Oc=",
-    "h1:MHKT/A4JZXbv0IqBSvlp0kTbmNfwPmahky082a+VB2Y=",
-    "h1:PgcynJ84/AuIfRlrXCl3HohQg/fP6jUgGXdh4LCarB0=",
-    "h1:kpTwAzd7hY/uN/2BAYpOjdSK7sokWFGbRVMwd/t3+0w=",
-    "h1:tOye2RnjFNXH236AsqGaIWtz4j6PZrpPuJhOSBt0KxU=",
-    "h1:xXwqhGFufcH8MksICcthz7r1lmaUCIzkFDR+8x/9PR0=",
     "zh:2778de76c7dfb2e85c75fe6de3c11172a25551ed499bfb9e9f940a5be81167b0",
     "zh:3b4c436a41e4fbae5f152852a9bd5c97db4460af384e26977477a40adf036690",
     "zh:617a372f5bb2288f3faf5fd4c878a68bf08541cf418a3dbb8a19bc41ad4a0bf2",
