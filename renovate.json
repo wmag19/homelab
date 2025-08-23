@@ -23,5 +23,10 @@
     }
   ],
   "prConcurrentLimit": 3,
-  "prHourlyLimit": 2
+  "prHourlyLimit": 2,
+  "registryAliases": {
+    "grafana": "https://grafana.github.io/helm-charts",
+    "bitnami": "https://charts.bitnami.com/bitnami",
+    "renovate": "https://docs.renovatebot.com/helm-charts"
+  }
 }
