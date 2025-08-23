@@ -28,10 +28,13 @@ renovate:
 
   # Environment variables for GitHub integration
   env:
-    RENOVATE_TOKEN:
-      secretName: renovate-secret
-      secretKey: token
-    LOG_LEVEL: info
+    - name: RENOVATE_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: renovate-secret
+          key: token
+    - name: LOG_LEVEL
+      value: "info"
 
 # Resource limits and requests
 resources:
