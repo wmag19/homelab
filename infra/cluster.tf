@@ -23,17 +23,15 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
     yamlencode({
       machine = {
         network = {
-          interfaces = {
-            interfaces = [
-              {
-                # interface = "eth0"
-                # dhcp      = true
-                vip = {
-                  ip = "192.168.0.9"
-                }
+          interfaces = [
+            {
+              interface = "eth0"
+              dhcp      = true
+              vip = {
+                ip = "192.168.0.9"
               }
-            ]
-          }
+            }
+          ]
         }
       }
     })
