@@ -26,7 +26,8 @@ renovate:
       },
       "helm-values": {
         "fileMatch": ["values\\.ya?ml$"]
-      }
+      },
+      "logLevel": "debug"
     }
 
 # Use existing secret for environment variables
