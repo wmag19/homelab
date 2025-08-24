@@ -67,7 +67,7 @@ data "talos_cluster_health" "health" {
   endpoints            = data.talos_client_configuration.talosconfig.endpoints
 }
 
-data "talos_cluster_kubeconfig" "kubeconfig" {
+resource "talos_cluster_kubeconfig" "kubeconfig" {
   depends_on           = [talos_machine_bootstrap.bootstrap, data.talos_cluster_health.health]
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
   node                 = proxmox_virtual_environment_vm.talos_cp_01.ipv4_addresses[7][0]
@@ -79,6 +79,6 @@ output "talosconfig" {
 }
 
 output "kubeconfig" {
-  value     = data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
+  value     = talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
   sensitive = true
 }
