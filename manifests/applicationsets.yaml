@@ -19,6 +19,10 @@ spec:
         repoURL: https://docs.renovatebot.com/helm-charts
         version: "43.15.0"
         namespace: renovate
+      - chart: traefik
+        repoURL: https://traefik.github.io/charts
+        version: "37.0.0"
+        namespace: traefik
   template:
     metadata:
       name: '{{chart}}'
