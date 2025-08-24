@@ -52,18 +52,9 @@ gateway:
     web:
       port: 8000
       protocol: HTTP
-      namespacePolicy:
-        # Allow resources from argocd namespace
-        namespaceSelector:
-          matchNames:
-            - argocd
     websecure:
       port: 8443
       protocol: HTTPS
-      namespacePolicy:
-        namespaceSelector:
-          matchNames:
-            - argocd
 
 gatewayClass:
   enabled: true
