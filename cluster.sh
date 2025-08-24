@@ -16,14 +16,17 @@ up() {
     fi
     
     # Apply terraform configuration with retry logic for health check
-    echo "Applying terraform configuration..."
-    if ! timeout 300 terraform apply -var-file=infra/lab.tfvars -auto-approve; then
+    echo "Initializing and applying terraform configuration..."
+    cd infra
+    terraform init -reconfigure >/dev/null 2>&1
+    if ! timeout 300 terraform apply -var-file=lab.tfvars -auto-approve; then
         echo "Terraform apply failed or timed out, checking for health check issues..."
         # Remove health check from state and retry
         terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
         echo "Retrying terraform apply without health check dependency..."
-        terraform apply -var-file=infra/lab.tfvars -auto-approve
+        terraform apply -var-file=lab.tfvars -auto-approve
     fi
+    cd ..
     
     echo "Cluster deployed successfully!"
     
@@ -32,12 +35,14 @@ up() {
     mkdir -p "$HOME/.talos"
     
     echo "Extracting kubeconfig..."
+    cd infra
     terraform output -raw kubeconfig > "$HOME/.kube/config"
     chmod 600 "$HOME/.kube/config"
     
     echo "Extracting talosconfig..."
     terraform output -raw talosconfig > "$HOME/.talos/config"
     chmod 600 "$HOME/.talos/config"
+    cd ..
     
     echo "Configuration files written to:"
     echo "  - Kubeconfig: $HOME/.kube/config"
@@ -82,23 +87,26 @@ down() {
     fi
     
     # Remove health check from state first to avoid timeout during destroy
+    cd infra
     terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
     
     # Destroy everything except the ISO download
     echo "Destroying cluster resources..."
-    if ! timeout 300 terraform destroy -var-file=infra/lab.tfvars \
+    if ! timeout 300 terraform destroy -var-file=lab.tfvars \
         -target=proxmox_virtual_environment_vm.talos_cp_01 \
         -target=proxmox_virtual_environment_vm.talos_worker_01 \
         -target=talos_machine_secrets.machine_secrets \
         -target=talos_machine_configuration_apply.cp_config_apply \
         -target=talos_machine_configuration_apply.worker_config_apply \
         -target=talos_machine_bootstrap.bootstrap \
+        -target=talos_cluster_kubeconfig.kubeconfig \
         -target=helm_release.argocd \
         -target=kubernetes_namespace.argocd \
-        -target=null_resource.apply_applicationset \
+        -target=null_resource.app_of_apps \
         -auto-approve; then
         echo "Destroy operation timed out or failed, but continuing..."
     fi
+    cd ..
     
     echo "Cluster destroyed (ISO preserved for faster redeployment)"
 }
@@ -139,10 +147,12 @@ down_all() {
     fi
     
     # Remove health check from state first to avoid timeout during destroy
+    cd infra
     terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
     
     # Destroy everything
-    terraform destroy -var-file=infra/lab.tfvars -auto-approve
+    terraform destroy -var-file=lab.tfvars -auto-approve
+    cd ..
     
     echo "All resources destroyed"
 }

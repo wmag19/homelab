@@ -1,17 +1,17 @@
 provider "helm" {
   kubernetes = {
-    host                   = yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
-    client_certificate     = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
-    client_key             = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
-    cluster_ca_certificate = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
+    host                   = yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
+    client_certificate     = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
+    client_key             = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
+    cluster_ca_certificate = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
   }
 }
 
 provider "kubernetes" {
-  host                   = yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
-  client_certificate     = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
-  client_key             = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
-  cluster_ca_certificate = base64decode(yamldecode(data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
+  host                   = yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["server"]
+  client_certificate     = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-certificate-data"])
+  client_key             = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["users"][0]["user"]["client-key-data"])
+  cluster_ca_certificate = base64decode(yamldecode(talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw)["clusters"][0]["cluster"]["certificate-authority-data"])
 }
 
 resource "kubernetes_namespace" "argocd" {
@@ -49,12 +49,12 @@ resource "helm_release" "argocd" {
   ]
 }
 
-resource "null_resource" "apply_applicationset" {
+resource "null_resource" "app_of_apps" {
   depends_on = [helm_release.argocd]
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo '${data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw}' > /tmp/kubeconfig-temp
+      echo '${talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw}' > /tmp/kubeconfig-temp
       sleep 30
       kubectl --kubeconfig=/tmp/kubeconfig-temp apply -f ${path.module}/bootstrap-app.yaml
       rm /tmp/kubeconfig-temp
