@@ -18,3 +18,25 @@ terraform {
     }
   }
 }
+
+terraform {
+  backend "local" {
+    path = "infra/terraform.tfstate"
+  }
+}
+
+provider "proxmox" {
+  endpoint = var.pve_endpoint
+  insecure = true # Only needed if your Proxmox server is using a self-signed certificate
+
+  ssh {
+    agent    = true
+    username = "root"
+  }
+}
+
+locals {
+  talos = {
+    version = "v1.10.6"
+  }
+}
