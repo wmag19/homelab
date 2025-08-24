@@ -1,0 +1,51 @@
+# Use DaemonSet for better availability across nodes
+deployment:
+  kind: DaemonSet
+
+# Disable IngressRoute dashboard (we'll use Gateway API)
+ingressRoute:
+  dashboard:
+    enabled: false
+
+# Enable Gateway API and other providers
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowCrossNamespace: true
+  kubernetesIngress:
+    enabled: true
+    allowExternalNameServices: true
+  kubernetesGateway:
+    enabled: true
+
+# Enable experimental Gateway API features
+experimental:
+  kubernetesGateway:
+    enabled: true
+
+# Configure ports with HTTP->HTTPS redirect
+# ports:
+#   web:
+#     redirectTo:
+#       port: websecure
+#   websecure:
+#     tls:
+#       enabled: true
+
+# Use NodePort since no LoadBalancer available
+service:
+  type: NodePort
+
+# Enable Gateway API resources to be created automatically
+# gateway:
+#   enabled: true
+#   listeners:
+#     web:
+#       port: 8000
+#       protocol: HTTP
+#     websecure:
+#       port: 8443
+#       protocol: HTTPS
+
+gatewayClass:
+  enabled: true
