@@ -17,12 +17,12 @@ up() {
     
     # Apply terraform configuration with retry logic for health check
     echo "Applying terraform configuration..."
-    if ! timeout 300 terraform apply -var-file=lab.tfvars -auto-approve; then
+    if ! timeout 300 terraform apply -var-file=infra/lab.tfvars -auto-approve; then
         echo "Terraform apply failed or timed out, checking for health check issues..."
         # Remove health check from state and retry
         terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
         echo "Retrying terraform apply without health check dependency..."
-        terraform apply -var-file=lab.tfvars -auto-approve
+        terraform apply -var-file=infra/lab.tfvars -auto-approve
     fi
     
     echo "Cluster deployed successfully!"
@@ -86,7 +86,7 @@ down() {
     
     # Destroy everything except the ISO download
     echo "Destroying cluster resources..."
-    if ! timeout 300 terraform destroy -var-file=lab.tfvars \
+    if ! timeout 300 terraform destroy -var-file=infra/lab.tfvars \
         -target=proxmox_virtual_environment_vm.talos_cp_01 \
         -target=proxmox_virtual_environment_vm.talos_worker_01 \
         -target=talos_machine_secrets.machine_secrets \
@@ -104,10 +104,45 @@ down() {
 }
 
 down_all() {
+    echo "⚠️  WARNING: This will destroy all Terraform resources including ISO!"
+    echo "This action cannot be undone."
+    echo
+    read -p "Are you sure you want to continue? (type 'yes' to confirm): " confirmation
+    
+    if [ "$confirmation" != "yes" ]; then
+        echo "Destroy cancelled."
+        return 1
+    fi
+    
     echo "Destroying all Terraform resources..."
     
+    # Clean up ArgoCD applications first to prevent finalizer issues
+    echo "Cleaning up ArgoCD applications..."
+    if kubectl get apps -n argocd >/dev/null 2>&1; then
+        # Remove finalizers from all applications
+        for app in $(kubectl get apps -n argocd -o name 2>/dev/null); do
+            echo "Removing finalizers from $app"
+            kubectl patch "$app" -n argocd -p '{"metadata": {"finalizers": null}}' --type merge 2>/dev/null || true
+        done
+        
+        # Delete all applications
+        kubectl delete apps --all -n argocd --timeout=30s 2>/dev/null || true
+        
+        # Clean up applicationsets
+        for appset in $(kubectl get applicationsets -n argocd -o name 2>/dev/null); do
+            echo "Removing finalizers from $appset"
+            kubectl patch "$appset" -n argocd -p '{"metadata": {"finalizers": null}}' --type merge 2>/dev/null || true
+        done
+        kubectl delete applicationsets --all -n argocd --timeout=30s 2>/dev/null || true
+    else
+        echo "No ArgoCD applications found or cluster not accessible, proceeding with terraform destroy..."
+    fi
+    
+    # Remove health check from state first to avoid timeout during destroy
+    terraform state rm 'data.talos_cluster_health.health' 2>/dev/null || true
+    
     # Destroy everything
-    terraform destroy -var-file=lab.tfvars -auto-approve
+    terraform destroy -var-file=infra/lab.tfvars -auto-approve
     
     echo "All resources destroyed"
 }
