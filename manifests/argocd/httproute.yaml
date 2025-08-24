@@ -5,7 +5,8 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-  - name: argocd-gateway
+  - name: traefik-gateway
+    namespace: traefik
   hostnames:
   - argocd.local
   rules:
