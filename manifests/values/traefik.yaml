@@ -36,14 +36,12 @@ experimental:
 service:
   type: NodePort
 
-# Enable hostPort for direct port access via VIP
+# Configure standard ports for Traefik
 ports:
   web:
     port: 8000
-    hostPort: 80
   websecure:
     port: 8443
-    hostPort: 443
 
 # Enable Gateway API resources to be created automatically
 gateway:
