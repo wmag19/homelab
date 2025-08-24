@@ -37,15 +37,15 @@ service:
   type: NodePort
 
 # Enable Gateway API resources to be created automatically
-# gateway:
-#   enabled: true
-#   listeners:
-#     web:
-#       port: 8000
-#       protocol: HTTP
-#     websecure:
-#       port: 8443
-#       protocol: HTTPS
+gateway:
+  enabled: true
+  listeners:
+    web:
+      port: 8000
+      protocol: HTTP
+    websecure:
+      port: 8443
+      protocol: HTTPS
 
 gatewayClass:
   enabled: true
