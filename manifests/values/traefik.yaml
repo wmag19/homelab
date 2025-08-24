@@ -36,6 +36,15 @@ experimental:
 service:
   type: NodePort
 
+# Enable hostPort for direct port access via VIP
+ports:
+  web:
+    port: 8000
+    hostPort: 80
+  websecure:
+    port: 8443
+    hostPort: 443
+
 # Enable Gateway API resources to be created automatically
 gateway:
   enabled: true
@@ -43,9 +52,18 @@ gateway:
     web:
       port: 8000
       protocol: HTTP
+      namespacePolicy:
+        # Allow resources from argocd namespace
+        namespaceSelector:
+          matchNames:
+            - argocd
     websecure:
       port: 8443
       protocol: HTTPS
+      namespacePolicy:
+        namespaceSelector:
+          matchNames:
+            - argocd
 
 gatewayClass:
   enabled: true
