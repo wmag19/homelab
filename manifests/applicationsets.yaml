@@ -9,7 +9,7 @@ spec:
       elements:
       - chart: grafana
         repoURL: https://grafana.github.io/helm-charts
-        version: "9.3.4"
+        version: "9.4.5"
         namespace: test
       - chart: sealed-secrets
         repoURL: https://charts.bitnami.com/bitnami
@@ -17,11 +17,11 @@ spec:
         namespace: sealed-secrets
       - chart: renovate
         repoURL: https://docs.renovatebot.com/helm-charts
-        version: "43.15.0"
+        version: "43.53.2"
         namespace: renovate
       - chart: traefik
         repoURL: https://traefik.github.io/charts
-        version: "37.0.0"
+        version: "37.1.1"
         namespace: traefik
   template:
     metadata:
