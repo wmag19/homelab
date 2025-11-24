@@ -59,6 +59,8 @@ spec:
       hostPID: true
       serviceAccount: csi-node-sa
       hostNetwork: true
+      imagePullSecrets: 
+        - name: ghcr-pull-secret
       containers:
         - name: csi-driver-registrar
           securityContext:
@@ -88,7 +90,6 @@ spec:
             privileged: true
           imagePullPolicy: IfNotPresent
           image: ghcr.io/wmag19/synology-csi:v1.2.1
-          imagePullSecret: ghcr-pull-secret
           args:
             - --nodeid=$(KUBE_NODE_NAME)
             - --endpoint=$(CSI_ENDPOINT)
