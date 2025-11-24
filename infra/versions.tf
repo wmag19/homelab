@@ -37,6 +37,6 @@ provider "proxmox" {
 
 locals {
   talos = {
-    version = "v1.10.6"
+    version = "v1.11.5"
   }
 }
