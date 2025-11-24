@@ -145,6 +145,7 @@ spec:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
           image: ghcr.io/wmag19/synology/synology-csi:v1.2.1
+          imagePullSecret: ghcr-pull-secret
           args:
             - --nodeid=NotUsed
             - --endpoint=$(CSI_ENDPOINT)
