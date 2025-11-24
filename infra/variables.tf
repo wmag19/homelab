@@ -20,7 +20,7 @@ variable "talos_worker_01_ip_addr" {
 
 variable "image_url" {
   type        = string
-  default     = "https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.11.5/nocloud-amd64.raw.xz"
+  default     = ""
   description = "URL for Talos Linux Disk Image"
 }
 
