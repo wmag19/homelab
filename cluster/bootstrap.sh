@@ -27,6 +27,7 @@ HELM_REPO_URL="https://argoproj.github.io/argo-helm"
 CHART="argo-cd"
 CHART_VERSION="8.3.0"
 
+# Create temp files in a safe directory
 VALUES_FILE="$(mktemp --suffix=-argocd-values.yaml)"
 DOWNLOADED_KUBECONFIG="$(mktemp --suffix=-kubeconfig.yaml)"
 
@@ -48,41 +49,29 @@ server:
 EOF
 
 echo "1) Ensure helm and kubectl are available"
-command -v helm >/dev/null || { echo "helm not found in PATH"; exit 1; }
-command -v kubectl >/dev/null || { echo "kubectl not found in PATH"; exit 1; }
-command -v omnictl >/dev/null || echo "warning: omnictl not found in PATH (used to fetch talos kubeconfig)"
-
-echo "2) Add/update Helm repo and install/upgrade Argo CD"
-helm repo add "$HELM_REPO_NAME" "$HELM_REPO_URL" || true
-helm repo update
-helm upgrade --install "$RELEASE_NAME" "$HELM_REPO_NAME/$CHART" \
-  --version "$CHART_VERSION" \
-  --namespace "$NAMESPACE" --create-namespace \
-  -f "$VALUES_FILE"
+command -v helm >/dev/null 2>&1 || { echo "helm not found in PATH" >&2; exit 1; }
+command -v kubectl >/dev/null 2>&1 || { echo "kubectl not found in PATH" >&2; exit 1; }
+if ! command -v omnictl >/dev/null 2>&1; then
+  echo "warning: omnictl not found in PATH (used to fetch Talos kubeconfig)" >&2
+fi
 
 echo "3) Download Talos kubeconfig for cluster '$CLUSTER_NAME' (using omnictl)"
-if command -v omnictl >/dev/null; then
-  omnictl kubeconfig --cluster "$CLUSTER_NAME" > "$DOWNLOADED_KUBECONFIG"
-else
-  echo "omnictl not found; please download the Talos kubeconfig to: $DOWNLOADED_KUBECONFIG"
-  echo "Then re-run this script or paste the kubeconfig at that path."
+omnictl kubeconfig --merge --cluster "$CLUSTER_NAME"
+
+
+echo "5) Confirm kubectl can access the cluster"
+# Use current-context after merge; fail with helpful message
+CURRENT_CTX="$(kubectl config current-context || true)"
+if [[ -z "$CURRENT_CTX" ]]; then
+  echo "No current-context set in kubeconfig." >&2
   exit 1
 fi
 
-echo "4) Merge downloaded kubeconfig with existing kubeconfig"
-mkdir -p ~/.kube
-touch ~/.kube/config
-
-export KUBECONFIG="$HOME/.kube/config:$DOWNLOADED_KUBECONFIG"
-kubectl config view --flatten > "$HOME/.kube/config.tmp"
-mv "$HOME/.kube/config.tmp" "$HOME/.kube/config"
-unset KUBECONFIG
-
-echo "5) Confirm kubectl can access the cluster"
-kubectl get nodes --context "$(kubectl config current-context)" || {
-  echo "kubectl failed to list nodes; check kubeconfig/context."
+if ! kubectl --context "$CURRENT_CTX" get nodes >/dev/null 2>&1; then
+  echo "kubectl failed to list nodes for context '$CURRENT_CTX'; check kubeconfig/context." >&2
   exit 1
-}
+fi
+echo "kubectl can access the cluster using context: $CURRENT_CTX"
 
 echo "6) Wait for 30s to give Argo CD time to initialize"
 sleep 30
@@ -91,3 +80,13 @@ echo "7) Apply bootstrap manifest: $BOOTSTRAP_MANIFEST"
 kubectl apply -f "$BOOTSTRAP_MANIFEST"
 
 echo "Done."
+
+echo "2) Add/update Helm repo and install/upgrade Argo CD"
+helm repo add "$HELM_REPO_NAME" "$HELM_REPO_URL" >/dev/null 2>&1 || true
+helm repo update >/dev/null 2>&1 || true
+helm upgrade --install "$RELEASE_NAME" "$HELM_REPO_NAME/$CHART" \
+  --version "$CHART_VERSION" \
+  --namespace "$NAMESPACE" --create-namespace \
+  -f "$VALUES_FILE"
+
+
