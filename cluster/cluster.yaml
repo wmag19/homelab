@@ -9,6 +9,10 @@ kubernetes:
 talos:
   version: v1.12.5
 patches:
+  - name: allow-scheduling-control-plane
+    inline:
+      cluster:
+        allowSchedulingOnControlPlanes: true
   - name: disable-default-cni
     inline:
       cluster:
