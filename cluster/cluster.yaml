@@ -35,3 +35,4 @@ machineClass:
 systemExtensions:
   - siderolabs/qemu-guest-agent
   - siderolabs/util-linux-tools
+  - siderolabs/iscsi-tools
