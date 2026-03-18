@@ -23,6 +23,10 @@ spec:
         repoURL: https://prometheus-community.github.io/helm-charts
         version: 79.7.1
         namespace: monitoring
+      - chart: miniflux
+        repoURL: https://charts.gabe565.com
+        version: 0.9.2
+        namespace: miniflux
   template:
     metadata:
       name: '{{chart}}'
