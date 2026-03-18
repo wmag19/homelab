@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: miniflux
+  namespace: miniflux
+spec:
+  selector:
+    matchLabels:
+      app: miniflux
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: miniflux
+    spec:
+      containers:
+        - name: miniflux
+          image: miniflux/miniflux:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: RUN_MIGRATIONS
+              value: "1"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+            - name: DATABASE_URL
+              value: "postgres://miniflux:$(POSTGRES_PASSWORD)@postgres/miniflux2?sslmode=disable"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: miniflux
+  namespace: miniflux
+  labels:
+    app: miniflux
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: miniflux
+---
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: miniflux
+# spec:
+#   rules:
+#   - host: "miniflux.psliwka.app"
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: miniflux
+#           servicePort: 80
+#   tls:
+#   - hosts:
+#     - "miniflux.psliwka.app"
+#     secretName: miniflux-tls
