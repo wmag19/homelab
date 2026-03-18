@@ -23,6 +23,10 @@ spec:
         repoURL: https://prometheus-community.github.io/helm-charts
         version: 79.7.1
         namespace: monitoring
+      - chart: cloudnativepg
+        repoURL: https://cloudnative-pg.github.io/charts
+        version: 0.27.1
+        namespace: postgres
   template:
     metadata:
       name: '{{chart}}'
