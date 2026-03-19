@@ -11,23 +11,28 @@ spec:
         repoURL: https://charts.bitnami.com/bitnami
         version: 2.5.19
         namespace: sealed-secrets
+        nameTemplate: '{{releaseName | default chart}}'
       - chart: renovate
         repoURL: https://docs.renovatebot.com/helm-charts
         version: 43.15.0
         namespace: renovate
+        nameTemplate: '{{releaseName | default chart}}'
       - chart: traefik
         repoURL: https://traefik.github.io/charts
         version: 37.0.0
         namespace: traefik
+        nameTemplate: '{{releaseName | default chart}}'
       - chart: kube-prometheus-stack
         repoURL: https://prometheus-community.github.io/helm-charts
         version: 79.7.1
         namespace: monitoring
+        nameTemplate: '{{releaseName | default chart}}'
       - chart: cloudnative-pg
         repoURL: https://cloudnative-pg.github.io/charts
         version: 0.27.1
         namespace: postgres
         releaseName: cnpg
+        nameTemplate: '{{releaseName | default chart}}'
         #https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#helm-release-name
   template:
     metadata:
@@ -39,7 +44,7 @@ spec:
         chart: '{{chart}}'
         targetRevision: '{{version}}'
         helm:
-          releaseName: '{{releaseName | default chart}}'
+          releaseName: '{{nameTemplate}}'
           valueFiles:
           - $values/manifests/values/{{chart}}.yaml
       - repoURL: https://github.com/wmag19/homelab.git
