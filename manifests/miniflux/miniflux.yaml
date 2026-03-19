@@ -53,19 +53,19 @@ spec:
   selector:
     app: miniflux
 ---
-# apiVersion: networking.k8s.io/v1beta1
-# kind: Ingress
-# metadata:
-#   name: miniflux
-# spec:
-#   rules:
-#   - host: "miniflux.psliwka.app"
-#     http:
-#       paths:
-#       - backend:
-#           serviceName: miniflux
-#           servicePort: 80
-#   tls:
-#   - hosts:
-#     - "miniflux.psliwka.app"
-#     secretName: miniflux-tls
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: miniflux
+spec:
+  rules:
+  - host: "miniflux.psliwka.app"
+    http:
+      paths:
+      - backend:
+          serviceName: miniflux
+          servicePort: 80
+  tls:
+  - hosts:
+    - "miniflux.psliwka.app"
+    secretName: miniflux-tls
