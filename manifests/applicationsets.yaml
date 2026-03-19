@@ -12,24 +12,24 @@ spec:
         version: 2.5.19
         namespace: sealed-secrets
         nameTemplate: '{{releaseName | default chart}}'
-        releaseName: chart
-      - chart: renovate
-        repoURL: https://docs.renovatebot.com/helm-charts
-        version: 43.15.0
-        namespace: renovate
-        nameTemplate: '{{releaseName | default chart}}'
-        releaseName: chart
+        releaseName: sealed-secrets
+      # - chart: renovate
+      #   repoURL: https://docs.renovatebot.com/helm-charts
+      #   version: 43.15.0
+      #   namespace: renovate
+      #   nameTemplate: '{{releaseName | default chart}}'
+      #   releaseName: renovate
       - chart: traefik
         repoURL: https://traefik.github.io/charts
         version: 37.0.0
         namespace: traefik
         nameTemplate: '{{releaseName | default chart}}'
-        releaseName: chart
+        releaseName: traefik
       - chart: kube-prometheus-stack
         repoURL: https://prometheus-community.github.io/helm-charts
         version: 79.7.1
         namespace: monitoring
-        releaseName: chart
+        releaseName: kube-prometheus-stack
       - chart: cloudnative-pg
         repoURL: https://cloudnative-pg.github.io/charts
         version: 0.27.1
