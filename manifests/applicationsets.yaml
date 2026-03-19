@@ -26,7 +26,9 @@ spec:
       - chart: cnpg
         repoURL: https://cloudnative-pg.github.io/charts
         version: 0.27.1
-        namespace: postgres
+        namespace: cnpg-system
+        releaseName: cnpg
+        #https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#helm-release-name
   template:
     metadata:
       name: '{{chart}}'
@@ -37,6 +39,7 @@ spec:
         chart: '{{chart}}'
         targetRevision: '{{version}}'
         helm:
+          releaseName: '{{releaseName | default chart}}'
           valueFiles:
           - $values/manifests/values/{{chart}}.yaml
       - repoURL: https://github.com/wmag19/homelab.git
