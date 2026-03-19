@@ -9,8 +9,8 @@ spec:
     initdb:
       database: miniflux2
       owner: miniflux
-      secret:
-        name: miniflux-postgres-secret
+      # secret:
+      #   name: miniflux-postgres-secret
 
   storage:
     size: 1Gi
