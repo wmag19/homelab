@@ -70,7 +70,7 @@ spec:
             port:
               number: 80
           
-  tls:
-  - hosts:
-    - "miniflux.wcfm.me"
-    secretName: miniflux-tls
+  # tls:
+  # - hosts:
+  #   - "miniflux.wcfm.me"
+  #   secretName: miniflux-tls
