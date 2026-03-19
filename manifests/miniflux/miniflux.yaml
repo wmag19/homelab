@@ -62,9 +62,14 @@ spec:
   - host: "miniflux.wcfm.me"
     http:
       paths:
-      - backend:
-          serviceName: miniflux
-          servicePort: 80
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: miniflux
+            port:
+              number: 80
+          
   tls:
   - hosts:
     - "miniflux.wcfm.me"
