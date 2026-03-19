@@ -26,7 +26,7 @@ spec:
       - chart: cnpg
         repoURL: https://cloudnative-pg.github.io/charts
         version: 0.27.1
-        namespace: cnpg-system
+        namespace: postgres
         releaseName: cnpg
         #https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#helm-release-name
   template:
