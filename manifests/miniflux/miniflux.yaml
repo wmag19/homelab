@@ -25,15 +25,13 @@ spec:
               value: "8080"
             - name: RUN_MIGRATIONS
               value: "1"
-            - name: POSTGRES_USERNAME
-              value: app
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: cluster-example-initdb-app
+                  name: miniflux-postgres-secret
                   key: password
             - name: DATABASE_URL
-              value: "postgres://miniflux:$(POSTGRES_PASSWORD)@postgres/miniflux2?sslmode=disable"
+              value: "postgres://miniflux:p:$(POSTGRES_PASSWORD)@miniflux-postgres-rw.svc.cluster.local/miniflux2?sslmode=disable"
 
 ---
 apiVersion: v1

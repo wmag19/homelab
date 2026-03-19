@@ -1,16 +1,16 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: cluster-example-initdb
+  name: miniflux-postgres
   namespace: miniflux
 spec:
-  instances: 3
-  # bootstrap:
-  #   initdb:
-  #     database: app
-  #     owner: app
-  #     secret:
-  #       name: app-secret
+  instances: 1
+  bootstrap:
+    initdb:
+      database: miniflux2
+      owner: miniflux
+      secret:
+        name: miniflux-postgres-secret
 
   storage:
     size: 1Gi
