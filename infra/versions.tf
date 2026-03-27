@@ -6,7 +6,7 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.9.0"
+      version = "0.10.1"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -30,13 +30,13 @@ provider "proxmox" {
   insecure = true # Only needed if your Proxmox server is using a self-signed certificate
 
   ssh {
-    agent    = true
+    agent    = false
     username = "root"
   }
 }
 
 locals {
   talos = {
-    version = "v1.11.5"
+    version = "v1.12.6"
   }
 }

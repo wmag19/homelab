@@ -36,6 +36,11 @@ spec:
         namespace: postgres
         releaseName: cnpg
         #https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#helm-release-name
+      - chart: external-secrets
+        repoURL: https://charts.external-secrets.io
+        version: 2.2.0
+        namespace: external-secrets
+        releaseName: external-secrets
   template:
     metadata:
       name: '{{chart}}'
