@@ -11,6 +11,6 @@ parameters:
   location: "/volume1"
   mountPermissions: "0750"
 mountOptions:
-  - nfsvers=4.1
+  - nfsvers=4.0
 reclaimPolicy: Retain
 allowVolumeExpansion: true
