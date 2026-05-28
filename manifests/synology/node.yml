@@ -59,8 +59,8 @@ spec:
       hostPID: true
       serviceAccount: csi-node-sa
       hostNetwork: true
-      imagePullSecrets:
-        - name: ghcr-pull-secret
+      # imagePullSecrets:
+      #   - name: ghcr-pull-secret
       containers:
         - name: csi-driver-registrar
           securityContext:

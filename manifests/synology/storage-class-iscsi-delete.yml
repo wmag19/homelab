@@ -4,8 +4,8 @@ metadata:
   name: synology-iscsi-delete
 provisioner: csi.san.synology.com
 parameters:
-  dsm: 'willnas.home'
-  location: '/volume1'
+  dsm: "192.168.1.136"
+  location: "/volume1"
   protocol: iscsi
   csi.storage.k8s.io/fstype: ext4
 reclaimPolicy: Delete

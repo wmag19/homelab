@@ -84,8 +84,8 @@ spec:
     spec:
       serviceAccountName: csi-controller-sa
       hostNetwork: true
-      imagePullSecrets:
-        - name: ghcr-pull-secret
+      # imagePullSecrets:
+      #   - name: ghcr-pull-secret
       containers:
         - name: csi-provisioner
           securityContext:
