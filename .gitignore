@@ -56,3 +56,4 @@ terraform.rc
 secrets
 secret*
 talosconfig
+key*
