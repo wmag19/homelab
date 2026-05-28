@@ -84,7 +84,7 @@ spec:
     spec:
       serviceAccountName: csi-controller-sa
       hostNetwork: true
-      imagePullSecrets: 
+      imagePullSecrets:
         - name: ghcr-pull-secret
       containers:
         - name: csi-provisioner
@@ -146,7 +146,7 @@ spec:
             capabilities:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          image: ghcr.io/wmag19/synology-csi:v1.2.1
+          image: docker.io/synology/synology-csi:v1.3.0
           args:
             - --nodeid=NotUsed
             - --endpoint=$(CSI_ENDPOINT)
