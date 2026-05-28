@@ -6,6 +6,7 @@ My Kubernetes homelab
 * SSH Key added to Proxmox host:
 ```bash
 ssh-copy-id user@remote_host
+ssh-add /your/private/key
 ssh-add -L
 ```
 * Environment variables set up - PROXMOX_VE_API_TOKEN
@@ -38,3 +39,6 @@ This script runs the following steps:
 │ Use `talos_cluster_kubeconfig` resource instead. This data source will be removed in the next
 │ minor version of the provider.
 ```
+
+##Bootstrap:
+for v2 extend bootstrap script to include the install of external-secrets-operator with Azure SDK.

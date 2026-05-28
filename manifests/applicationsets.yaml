@@ -5,68 +5,61 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - list:
-      elements:
-      - chart: sealed-secrets
-        repoURL: https://charts.bitnami.com/bitnami
-        version: 2.5.19
-        namespace: sealed-secrets
-        nameTemplate: '{{releaseName | default chart}}'
-        releaseName: sealed-secrets
-      # - chart: renovate
-      #   repoURL: https://docs.renovatebot.com/helm-charts
-      #   version: 43.15.0
-      #   namespace: renovate
-      #   nameTemplate: '{{releaseName | default chart}}'
-      #   releaseName: renovate
-      - chart: traefik
-        repoURL: https://traefik.github.io/charts
-        version: 37.0.0
-        namespace: traefik
-        nameTemplate: '{{releaseName | default chart}}'
-        releaseName: traefik
-      - chart: kube-prometheus-stack
-        repoURL: https://prometheus-community.github.io/helm-charts
-        version: 79.7.1
-        namespace: monitoring
-        releaseName: kube-prometheus-stack
-      - chart: cloudnative-pg
-        repoURL: https://cloudnative-pg.github.io/charts
-        version: 0.27.1
-        namespace: postgres
-        releaseName: cnpg
-        #https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#helm-release-name
-      - chart: external-secrets
-        repoURL: https://charts.external-secrets.io
-        version: 2.2.0
-        namespace: external-secrets
-        releaseName: external-secrets
+    - list:
+        elements:
+          - chart: sealed-secrets
+            repoURL: https://charts.bitnami.com/bitnami
+            version: 2.5.19
+            namespace: sealed-secrets
+            nameTemplate: "{{releaseName | default chart}}"
+            releaseName: sealed-secrets
+          - chart: traefik
+            repoURL: https://traefik.github.io/charts
+            version: 37.0.0
+            namespace: traefik
+            nameTemplate: "{{releaseName | default chart}}"
+            releaseName: traefik
+          - chart: kube-prometheus-stack
+            repoURL: https://prometheus-community.github.io/helm-charts
+            version: 79.7.1
+            namespace: monitoring
+            releaseName: kube-prometheus-stack
+          - chart: cloudnative-pg
+            repoURL: https://cloudnative-pg.github.io/charts
+            version: 0.27.1
+            namespace: postgres
+            releaseName: cnpg
+          - chart: external-secrets
+            repoURL: https://charts.external-secrets.io
+            version: 2.2.0
+            namespace: secrets
+            releaseName: external-secrets
   template:
     metadata:
-      name: '{{chart}}'
+      name: "{{chart}}"
     spec:
       project: default
       sources:
-      - repoURL: '{{repoURL}}'
-        chart: '{{chart}}'
-        targetRevision: '{{version}}'
-        helm:
-          releaseName: '{{releaseName}}'
-          valueFiles:
-          - $values/manifests/values/{{chart}}.yaml
-      - repoURL: https://github.com/wmag19/homelab.git
-        targetRevision: HEAD
-        ref: values
+        - repoURL: "{{repoURL}}"
+          chart: "{{chart}}"
+          targetRevision: "{{version}}"
+          helm:
+            releaseName: "{{releaseName}}"
+            valueFiles:
+              - $values/manifests/values/{{chart}}.yaml
+        - repoURL: https://github.com/wmag19/homelab.git
+          targetRevision: HEAD
+          ref: values
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: "{{namespace}}"
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-        - CreateNamespace=true
-        - ServerSideApply=true
+          - CreateNamespace=true
+          - ServerSideApply=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -75,28 +68,28 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - git:
-      repoURL: https://github.com/wmag19/homelab.git
-      revision: HEAD
-      directories:
-      - path: manifests/*
-      - path: manifests/values
-        exclude: true
+    - git:
+        repoURL: https://github.com/wmag19/homelab.git
+        revision: HEAD
+        directories:
+          - path: manifests/*
+          - path: manifests/values
+            exclude: true
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: "{{path.basename}}"
     spec:
       project: default
       source:
         repoURL: https://github.com/wmag19/homelab.git
         targetRevision: HEAD
-        path: '{{path}}'
+        path: "{{path}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'
+        namespace: "{{path.basename}}"
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-        - CreateNamespace=true
+          - CreateNamespace=true

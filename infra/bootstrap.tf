@@ -26,7 +26,7 @@ resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-  version    = "8.3.0"
+  version    = "9.5.15"
   namespace  = "argocd"
 
   values = [
@@ -65,4 +65,3 @@ resource "null_resource" "app_of_apps" {
     applicationset_hash = filemd5("${path.module}/../manifests/applicationsets.yaml")
   }
 }
-

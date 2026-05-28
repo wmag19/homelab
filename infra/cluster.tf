@@ -2,10 +2,9 @@ resource "talos_machine_secrets" "machine_secrets" {}
 
 data "talos_image_factory_extensions_versions" "talos_extensions" {
   # get the latest talos version
-  talos_version = "v1.12.6"
+  talos_version = "v1.13.3"
   filters = {
     names = [
-      "iscsi-tools",
       "qemu-guest-agent",
     ]
   }
