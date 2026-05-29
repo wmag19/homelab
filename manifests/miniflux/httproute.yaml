@@ -4,8 +4,9 @@ metadata:
   name: backend
 spec:
   parentRefs:
-    - name: gateway-envoy
-      namespace: gateway
+    - kind: ListenerSet
+      name: gateway-envoy
+      namespace: envoy-gateway
   hostnames:
     - "miniflux.wcfm.me"
   rules:
