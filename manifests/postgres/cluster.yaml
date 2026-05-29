@@ -14,4 +14,4 @@ spec:
 
   storage:
     size: 2Gi
-    storageClass: synology-nfs-retain
+    storageClass: synology-iscsi-retain
