@@ -273,7 +273,12 @@ enableCertificateOwnerRef: false
 # If `apiVersion` and `kind` are unspecified they default to the current latest
 # version (currently `controller.config.cert-manager.io/v1alpha1`). You can pin
 # the version by specifying the `apiVersion` yourself.
-#
+
+config:
+  enableGatewayAPI: true
+  enableGatewayAPIListenerSet: true
+  featureGates:
+    ListenerSets: true
 # For example:
 #  config:
 #    apiVersion: controller.config.cert-manager.io/v1alpha1
