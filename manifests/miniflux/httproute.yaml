@@ -5,7 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: gateway-envoy
-      namespace: envoy-gateway
+      namespace: gateway
   hostnames:
     - "miniflux.wcfm.me"
   rules:
