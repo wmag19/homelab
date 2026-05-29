@@ -25,6 +25,34 @@ spec:
               value: "8080"
             - name: RUN_MIGRATIONS
               value: "1"
+            - name: CREATE_ADMIN
+              value: 1
+            - name: ADMIN_USERNAME
+              value: "admin"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux
+                  key: miniflux-admin-password
+            - name: OAUTH2_PROVIDER
+              value: "oidc"
+            - name: OAUTH2_USER_CREATION
+              value: 1
+            - name: OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux
+                  key: miniflux-oauth2-client-id
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux
+                  key: miniflux-oauth2-client-secret
+            - name: OAUTH2_REDIRECT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux
+                  key: miniflux-oauth2-redirect-url
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -59,17 +87,17 @@ metadata:
   name: miniflux
 spec:
   rules:
-  - host: "miniflux.wcfm.me"
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: miniflux
-            port:
-              number: 80
-          
+    - host: "miniflux.wcfm.me"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: miniflux
+                port:
+                  number: 80
+
   # tls:
   # - hosts:
   #   - "miniflux.wcfm.me"
