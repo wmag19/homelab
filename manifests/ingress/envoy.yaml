@@ -16,6 +16,6 @@ spec:
       protocol: HTTP
       port: 80
     - name: https
-      protool: HTTPS
+      protocoll: HTTPS
       port: 443
 ---
