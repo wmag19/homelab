@@ -4,7 +4,7 @@ metadata:
   name: miniflux
   namespace: miniflux
   annotations:
-    cert-manager.io/cluster-issuer: selfsigned
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   parentRef:
     name: gateway-envoy
