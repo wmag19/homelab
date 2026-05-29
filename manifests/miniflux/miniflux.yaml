@@ -43,6 +43,11 @@ spec:
                 secretKeyRef:
                   name: miniflux
                   key: miniflux-oauth2-client-id
+            - name: OAUTH2_OIDC_DISCOVERY_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux
+                  key: miniflux-oauth2-discovery-endpoint
             - name: OAUTH2_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
