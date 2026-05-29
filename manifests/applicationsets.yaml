@@ -27,6 +27,11 @@ spec:
             version: 0.16.1
             namespace: metallb-system
             releaseName: metallb
+          - chart: gateway-helm
+            repoURL: docker.io/envoyproxy
+            version: v1.8.0
+            namespace: envoy-gateway
+            releaseName: envoy-gateway
   template:
     metadata:
       name: "{{chart}}"
