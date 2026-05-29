@@ -7,18 +7,6 @@ spec:
   generators:
     - list:
         elements:
-          - chart: sealed-secrets
-            repoURL: https://charts.bitnami.com/bitnami
-            version: 2.5.19
-            namespace: sealed-secrets
-            nameTemplate: "{{releaseName | default chart}}"
-            releaseName: sealed-secrets
-          - chart: traefik
-            repoURL: https://traefik.github.io/charts
-            version: 37.0.0
-            namespace: traefik
-            nameTemplate: "{{releaseName | default chart}}"
-            releaseName: traefik
           - chart: kube-prometheus-stack
             repoURL: https://prometheus-community.github.io/helm-charts
             version: 79.7.1
