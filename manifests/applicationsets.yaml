@@ -26,6 +26,7 @@ spec:
             repoURL: https://metallb.github.io/metallb
             version: 0.16.1
             namespace: metallb-system
+            releaseName: metallb
   template:
     metadata:
       name: "{{chart}}"
