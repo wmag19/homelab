@@ -6,7 +6,7 @@ data "talos_image_factory_extensions_versions" "talos_extensions" {
   filters = {
     names = [
       "qemu-guest-agent",
-      "isci-tools",
+      "iscsi-tools",
     ]
   }
 }
