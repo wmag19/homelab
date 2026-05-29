@@ -13,6 +13,7 @@ spec:
           cloudflare:
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
+              key: api-token
 
 ---
 apiVersion: external-secrets.io/v1
