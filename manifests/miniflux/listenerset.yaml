@@ -18,6 +18,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: miniflux-tls
+            kind: Secret
     - name: http
       hostname: miniflux.wcfm.me
       port: 80
