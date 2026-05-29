@@ -6,4 +6,4 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.1.50-192.168.1.60 # Range of IPs on your network
+    - 192.168.1.20-192.168.1.30 # Range of IPs on your network
