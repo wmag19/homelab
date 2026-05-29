@@ -22,6 +22,10 @@ spec:
             version: 2.2.0
             namespace: secrets
             releaseName: external-secrets
+          - chart: metallb
+            repoURL: https://metallb.github.io/metallb
+            version: 0.16.1
+            namespace: metallb-system
   template:
     metadata:
       name: "{{chart}}"
