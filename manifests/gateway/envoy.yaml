@@ -2,6 +2,8 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
   name: envoy
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
 ---
@@ -9,20 +11,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: gateway-envoy
+  name: envoy-gateway
 spec:
   gatewayClassName: envoy
+  allowedListeners:
+    - from: "All"
   listeners:
     - name: http
+      hostname: dummy
       protocol: HTTP
-      port: 80
-      allowedRoutes:
-        namespaces:
-          from: "All"
-    # - name: https
-    #   protocol: HTTPS
-    #   port: 443
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: "All"
-
----
+      port: 1234
