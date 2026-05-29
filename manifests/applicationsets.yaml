@@ -32,6 +32,11 @@ spec:
             version: v1.8.0
             namespace: envoy-gateway
             releaseName: envoy-gateway
+          - chart: cert-manager
+            repoURL: https://charts.jetstack.io
+            version: v1.20.2
+            namespace: cert-manager
+            releaseName: cert-manager
   template:
     metadata:
       name: "{{chart}}"
