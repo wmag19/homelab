@@ -1,0 +1,1775 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vmlogs-dashboard
+  namespace: monitoring
+  annotations:
+    grafana_datasource: "1"
+data:
+  vmlogs-dashboard.json: |-
+    {
+      "annotations": [
+        {
+          "kind": "AnnotationQuery",
+          "spec": {
+            "builtIn": true,
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "query": {
+              "datasource": {
+                "name": "-- Grafana --"
+              },
+              "group": "grafana",
+              "kind": "DataQuery",
+              "spec": {},
+              "version": "v0"
+            }
+          }
+        }
+      ],
+      "cursorSync": "Crosshair",
+      "editable": true,
+      "elements": {
+        "panel-10": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace)}\r\n| stats by (kubernetes.pod_namespace) count()\r\n| count()",
+                          "legendFormat": "",
+                          "queryType": "stats"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 10,
+            "links": [],
+            "title": "Namespaces",
+            "vizConfig": {
+              "group": "stat",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": []
+                },
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "center",
+                  "orientation": "vertical",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-11": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| stats by (kubernetes.container_name) count()\r\n| count()",
+                          "legendFormat": "",
+                          "queryType": "stats"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 11,
+            "links": [],
+            "title": "Containers",
+            "vizConfig": {
+              "group": "stat",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": []
+                },
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "center",
+                  "orientation": "vertical",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-12": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| stats by (kubernetes.pod_namespace) count() logs_count\r\n| filter logs_count: > 0",
+                          "isApplyExtraFiltersToRootQuery": false,
+                          "legendFormat": "{{kubernetes.pod_namespace}}",
+                          "queryType": "statsRange"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {
+                  "interval": "$interval"
+                },
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 12,
+            "links": [],
+            "title": "Logs by namespace (per $__interval)",
+            "vizConfig": {
+              "group": "timeseries",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "never",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": []
+                },
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [
+                      "mean",
+                      "max",
+                      "min"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Total",
+                    "sortDesc": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "desc"
+                  }
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-14": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [],
+                "queryOptions": {},
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 14,
+            "links": [],
+            "title": "",
+            "transparent": true,
+            "vizConfig": {
+              "group": "text",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                },
+                "options": {
+                  "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                  },
+                  "content": "- The dashboard filters data by `container name`. The data may not be displayed correctly if several containers have the same name\r\n- The description explicitly specifies a `limit for variables`. It is possible that there are more applications in your cluster and they may not be displayed",
+                  "mode": "markdown"
+                }
+              },
+              "version": "12.4.2"
+            }
+          }
+        },
+        "panel-15": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| facets 5\r\n| sort by(hits) desc",
+                          "queryType": "instant"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": [
+                  {
+                    "group": "extractFields",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "group": "organize",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {},
+                        "renameByName": {
+                          "field_name": "Name",
+                          "field_value": "Value",
+                          "hits": "Count"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "description": "Shows the most common field-value pairs \n\nhttps://docs.victoriametrics.com/victorialogs/logsql/#facets-pipe",
+            "id": 15,
+            "links": [],
+            "title": "Top field-value pairs (facets)",
+            "vizConfig": {
+              "group": "table",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        },
+                        {
+                          "id": "custom.align",
+                          "value": "right"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "options": {
+                  "cellHeight": "sm",
+                  "enablePagination": true,
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-16": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| collapse_nums prettify\r\n| top 10 by(_msg)",
+                          "queryType": "instant"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": [
+                  {
+                    "group": "extractFields",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": false,
+                        "replace": false,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "group": "organize",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true,
+                          "detected_level": true,
+                          "labels": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {},
+                        "renameByName": {
+                          "Line": "Message",
+                          "field_name": "",
+                          "field_value": "",
+                          "hits": "Count"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "description": "Shows most common log patterns on the time range\n\nhttps://docs.victoriametrics.com/victorialogs/logsql/#collapse_nums-pipe",
+            "id": 16,
+            "links": [],
+            "title": "Top 10 log patterns (collapse_nums)",
+            "vizConfig": {
+              "group": "table",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        },
+                        {
+                          "id": "custom.align",
+                          "value": "right"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "options": {
+                  "cellHeight": "sm",
+                  "enablePagination": false,
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-17": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| stats by (kubernetes.container_name) count() logs_count\r\n| filter logs_count: > 0",
+                          "isApplyExtraFiltersToRootQuery": false,
+                          "legendFormat": "{{kubernetes.container_name}}",
+                          "queryType": "statsRange"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {
+                  "interval": "$interval"
+                },
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 17,
+            "links": [],
+            "title": "Logs by container (per $__interval)",
+            "vizConfig": {
+              "group": "timeseries",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "never",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": []
+                },
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [
+                      "mean",
+                      "max",
+                      "min"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true,
+                    "sortBy": "Total",
+                    "sortDesc": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "desc"
+                  }
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-3": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "direction": "desc",
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| sort by (_time) desc\r\n| limit $limit",
+                          "isApplyExtraFiltersToRootQuery": true,
+                          "legendFormat": "",
+                          "maxLines": 5000,
+                          "queryType": "instant"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 3,
+            "links": [],
+            "title": "Logs raw",
+            "vizConfig": {
+              "group": "logs",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                },
+                "options": {
+                  "dedupStrategy": "none",
+                  "detailsMode": "inline",
+                  "enableInfiniteScrolling": false,
+                  "enableLogDetails": true,
+                  "fontSize": "small",
+                  "prettifyLogMessage": true,
+                  "showControls": true,
+                  "showFieldSelector": false,
+                  "showLabels": false,
+                  "showLevel": true,
+                  "showTime": true,
+                  "sortOrder": "Descending",
+                  "syntaxHighlighting": true,
+                  "timestampResolution": "ms",
+                  "unwrappedColumns": false,
+                  "wrapLogMessage": true
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-6": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| top 10 (kubernetes.pod_namespace)",
+                          "isApplyExtraFiltersToRootQuery": false,
+                          "queryType": "instant"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": [
+                  {
+                    "group": "extractFields",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "group": "organize",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "hits": 2,
+                          "kubernetes.pod_namespace": 1
+                        },
+                        "renameByName": {
+                          "hits": "Count",
+                          "kubernetes.container_name": "Name",
+                          "kubernetes.pod_namespace": "Name"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "description": "",
+            "id": 6,
+            "links": [],
+            "title": "Top 10 logs by namespace",
+            "vizConfig": {
+              "group": "table",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.align",
+                          "value": "right"
+                        },
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Name"
+                      },
+                      "properties": [
+                        {
+                          "id": "links",
+                          "value": [
+                            {
+                              "title": "Link",
+                              "url": "/d/${__dashboard.uid}?${ds:queryparam}&var-namespace=${__value.text}&${container:queryparam}&${level:queryparam}&${limit:queryparam}&${filter:queryparam}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-7": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| log.level:in($level)\r\n| top 50 (kubernetes.container_name)",
+                          "isApplyExtraFiltersToRootQuery": false,
+                          "queryType": "instant"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {},
+                "transformations": [
+                  {
+                    "group": "extractFields",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "group": "organize",
+                    "kind": "Transformation",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "hits": 2,
+                          "kubernetes.container_name": 1
+                        },
+                        "renameByName": {
+                          "hits": "Count",
+                          "kubernetes.container_name": "Name",
+                          "kubernetes.pod_namespace": "Name"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "description": "",
+            "id": 7,
+            "links": [],
+            "title": "Top 50 logs by containers",
+            "vizConfig": {
+              "group": "table",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.align",
+                          "value": "right"
+                        },
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Name"
+                      },
+                      "properties": [
+                        {
+                          "id": "links",
+                          "value": [
+                            {
+                              "title": "Link",
+                              "url": "/d/${__dashboard.uid}?${ds:queryparam}&${namespace:queryparam}&var-container=${__value.text}&${level:queryparam}&${limit:queryparam}&${filter:queryparam}"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        },
+        "panel-9": {
+          "kind": "Panel",
+          "spec": {
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "hidden": false,
+                      "query": {
+                        "datasource": {
+                          "name": "${ds}"
+                        },
+                        "group": "victoriametrics-logs-datasource",
+                        "kind": "DataQuery",
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)}\r\n| format if (log.level:\"\") \"unknown\" as log.level\r\n| stats by (log.level) count()",
+                          "isApplyExtraFiltersToRootQuery": true,
+                          "legendFormat": "{{ log.level }}",
+                          "queryType": "statsRange"
+                        },
+                        "version": "v0"
+                      },
+                      "refId": "A"
+                    }
+                  }
+                ],
+                "queryOptions": {
+                  "interval": "$interval"
+                },
+                "transformations": []
+              }
+            },
+            "description": "",
+            "id": 9,
+            "links": [],
+            "title": "Logs volume (per $__interval)",
+            "vizConfig": {
+              "group": "timeseries",
+              "kind": "VizConfig",
+              "spec": {
+                "fieldConfig": {
+                  "defaults": {
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "never",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    },
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "color": "green",
+                          "value": 0
+                        },
+                        {
+                          "color": "red",
+                          "value": 80
+                        }
+                      ]
+                    },
+                    "unit": "short"
+                  },
+                  "overrides": []
+                },
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [
+                      "sum"
+                    ],
+                    "displayMode": "table",
+                    "placement": "right",
+                    "showLegend": true,
+                    "sortBy": "Total",
+                    "sortDesc": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "desc"
+                  }
+                }
+              },
+              "version": "13.0.1+security-01"
+            }
+          }
+        }
+      },
+      "layout": {
+        "kind": "RowsLayout",
+        "spec": {
+          "rows": [
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "collapse": true,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-14"
+                          },
+                          "height": 4,
+                          "width": 24,
+                          "x": 0,
+                          "y": 0
+                        }
+                      }
+                    ]
+                  }
+                },
+                "title": "Info"
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-10"
+                          },
+                          "height": 5,
+                          "width": 3,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-11"
+                          },
+                          "height": 5,
+                          "width": 3,
+                          "x": 3,
+                          "y": 0
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-9"
+                          },
+                          "height": 5,
+                          "width": 18,
+                          "x": 6,
+                          "y": 0
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-6"
+                          },
+                          "height": 9,
+                          "width": 6,
+                          "x": 0,
+                          "y": 5
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-12"
+                          },
+                          "height": 9,
+                          "width": 18,
+                          "x": 6,
+                          "y": 5
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-7"
+                          },
+                          "height": 9,
+                          "width": 6,
+                          "x": 0,
+                          "y": 14
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-17"
+                          },
+                          "height": 9,
+                          "width": 18,
+                          "x": 6,
+                          "y": 14
+                        }
+                      }
+                    ]
+                  }
+                },
+                "title": "Overview ($namespace)"
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-15"
+                          },
+                          "height": 8,
+                          "width": 12,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-16"
+                          },
+                          "height": 8,
+                          "width": 12,
+                          "x": 12,
+                          "y": 0
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-3"
+                          },
+                          "height": 16,
+                          "width": 24,
+                          "x": 0,
+                          "y": 8
+                        }
+                      }
+                    ]
+                  }
+                },
+                "title": "Raw logs ($container)"
+              }
+            }
+          ]
+        }
+      },
+      "links": [
+        {
+          "asDropdown": false,
+          "icon": "bolt",
+          "includeVars": false,
+          "keepTime": false,
+          "tags": [],
+          "targetBlank": false,
+          "title": "Reset Filter",
+          "tooltip": "",
+          "type": "link",
+          "url": "/d/${__dashboard.uid}?$var-ds=$ds&var-namespace=$__all&var-container=$__all&var-level=$__all&var-limit=500&var-filter="
+        }
+      ],
+      "liveNow": false,
+      "preload": false,
+      "tags": [
+        "kubernetes",
+        "demo",
+        "victorialogs"
+      ],
+      "timeSettings": {
+        "autoRefresh": "",
+        "autoRefreshIntervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "fiscalYearStartMonth": 0,
+        "from": "now-24h",
+        "hideTimepicker": false,
+        "timezone": "browser",
+        "to": "now"
+      },
+      "title": "VictoriaLogs - Explorer for Kubernetes logs",
+      "variables": [
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "allowCustomValue": false,
+            "current": {
+              "text": "VictoriaLogs",
+              "value": "PD775F2863313E6C7"
+            },
+            "hide": "dontHide",
+            "includeAll": false,
+            "label": "DS",
+            "multi": false,
+            "name": "ds",
+            "options": [],
+            "pluginId": "victoriametrics-logs-datasource",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "skipUrlSync": false
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "allowCustomValue": true,
+            "current": {
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "definition": "{}",
+            "description": "Limit 50",
+            "hide": "dontHide",
+            "includeAll": true,
+            "label": "Namespace",
+            "multi": true,
+            "name": "namespace",
+            "options": [],
+            "query": {
+              "datasource": {
+                "name": "${ds}"
+              },
+              "group": "victoriametrics-logs-datasource",
+              "kind": "DataQuery",
+              "spec": {
+                "field": "kubernetes.pod_namespace",
+                "limit": 50,
+                "query": "{}",
+                "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+                "type": "fieldValue"
+              },
+              "version": "v0"
+            },
+            "refresh": "onTimeRangeChanged",
+            "regex": "",
+            "regexApplyTo": "value",
+            "skipUrlSync": false,
+            "sort": "alphabeticalAsc"
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "allValue": "*",
+            "allowCustomValue": true,
+            "current": {
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "definition": "{kubernetes.pod_namespace in($namespace)}",
+            "description": "Limit 100",
+            "hide": "dontHide",
+            "includeAll": true,
+            "label": "Container",
+            "multi": true,
+            "name": "container",
+            "options": [],
+            "query": {
+              "datasource": {
+                "name": "${ds}"
+              },
+              "group": "victoriametrics-logs-datasource",
+              "kind": "DataQuery",
+              "spec": {
+                "field": "kubernetes.container_name",
+                "limit": 100,
+                "query": "{kubernetes.pod_namespace in($namespace)}",
+                "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+                "type": "fieldValue"
+              },
+              "version": "v0"
+            },
+            "refresh": "onTimeRangeChanged",
+            "regex": "",
+            "regexApplyTo": "value",
+            "skipUrlSync": false,
+            "sort": "disabled"
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "allValue": "*",
+            "allowCustomValue": true,
+            "current": {
+              "text": [
+                "All"
+              ],
+              "value": [
+                "$__all"
+              ]
+            },
+            "definition": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)} | format if (log.level:\"\") \"unknown\" as log.level ",
+            "hide": "dontHide",
+            "includeAll": true,
+            "label": "Level",
+            "multi": true,
+            "name": "level",
+            "options": [],
+            "query": {
+              "datasource": {
+                "name": "${ds}"
+              },
+              "group": "victoriametrics-logs-datasource",
+              "kind": "DataQuery",
+              "spec": {
+                "field": "log.level",
+                "limit": 25,
+                "query": "{kubernetes.pod_namespace in($namespace), kubernetes.container_name in($container)} | format if (log.level:\"\") \"unknown\" as log.level ",
+                "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+                "type": "fieldValue"
+              },
+              "version": "v0"
+            },
+            "refresh": "onTimeRangeChanged",
+            "regex": "",
+            "regexApplyTo": "value",
+            "skipUrlSync": false,
+            "sort": "alphabeticalAsc"
+          }
+        },
+        {
+          "kind": "IntervalVariable",
+          "spec": {
+            "auto": true,
+            "auto_count": 200,
+            "auto_min": "10s",
+            "current": {
+              "text": "1m",
+              "value": "1m"
+            },
+            "description": "Interval for aggregating logs by time bucket in corresponding panels.",
+            "hide": "dontHide",
+            "label": "Interval",
+            "name": "interval",
+            "options": [
+              {
+                "selected": true,
+                "text": "1m",
+                "value": "1m"
+              },
+              {
+                "selected": false,
+                "text": "10m",
+                "value": "10m"
+              },
+              {
+                "selected": false,
+                "text": "30m",
+                "value": "30m"
+              },
+              {
+                "selected": false,
+                "text": "1h",
+                "value": "1h"
+              },
+              {
+                "selected": false,
+                "text": "6h",
+                "value": "6h"
+              },
+              {
+                "selected": false,
+                "text": "12h",
+                "value": "12h"
+              },
+              {
+                "selected": false,
+                "text": "1d",
+                "value": "1d"
+              },
+              {
+                "selected": false,
+                "text": "7d",
+                "value": "7d"
+              },
+              {
+                "selected": false,
+                "text": "14d",
+                "value": "14d"
+              },
+              {
+                "selected": false,
+                "text": "30d",
+                "value": "30d"
+              }
+            ],
+            "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+            "refresh": "onTimeRangeChanged",
+            "skipUrlSync": false
+          }
+        },
+        {
+          "kind": "CustomVariable",
+          "spec": {
+            "allowCustomValue": false,
+            "current": {
+              "text": "500",
+              "value": "500"
+            },
+            "description": "For logs raw",
+            "hide": "dontHide",
+            "includeAll": false,
+            "label": "Limit",
+            "multi": false,
+            "name": "limit",
+            "options": [],
+            "query": "500,1000,2500,5000",
+            "skipUrlSync": false,
+            "valuesFormat": "csv"
+          }
+        },
+        {
+          "datasource": {
+            "name": "${ds}"
+          },
+          "group": "victoriametrics-logs-datasource",
+          "kind": "AdhocVariable",
+          "spec": {
+            "allowCustomValue": true,
+            "baseFilters": [],
+            "defaultKeys": [],
+            "description": "For container panels",
+            "enableGroupBy": false,
+            "filters": [],
+            "hide": "dontHide",
+            "label": "Filter",
+            "name": "filter",
+            "skipUrlSync": false
+          }
+        }
+      ]
+    }
