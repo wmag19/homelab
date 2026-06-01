@@ -12,7 +12,7 @@ data:
       - name: VictoriaLogs
         type: victoriametrics-logs-datasource
         access: proxy
-        url: http://victorialogs.monitoring.svc.cluster.local:9428
+        url: http://vmlogs-single-victoria-logs-single-server.monitoring.svc.cluster.local:9428
         isDefault: false
         jsonData:
           # Multitenancy settings, see https://docs.victoriametrics.com/victorialogs/#multitenancy
