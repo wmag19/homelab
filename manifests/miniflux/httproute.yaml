@@ -2,7 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: miniflux
-  namespace: monitoring
+  namespace: miniflux
 spec:
   parentRefs:
     - kind: ListenerSet
@@ -21,3 +21,4 @@ spec:
         - path:
             type: PathPrefix
             value: /
+---
