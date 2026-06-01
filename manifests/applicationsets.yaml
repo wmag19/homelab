@@ -42,7 +42,7 @@ spec:
             version: 0.81.0
             namespace: monitoring
             releaseName: k8s-stack
-          - chart: victoria-metrics-logs-collector
+          - chart: victoria-logs-collector
             repoURL: https://victoriametrics.github.io/helm-charts
             version: 0.3.4
             namespace: monitoring

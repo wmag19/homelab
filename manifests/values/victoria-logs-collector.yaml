@@ -22,7 +22,7 @@ image:
 #
 # If the url path is not specified, the logs will be sent to the /insert/native endpoint.
 remoteWrite:
-  - url: http://vls-victoria-logs-single-server.monitoring.svc.cluster.local:9428
+  - url: http://vmlogs-single-victoria-logs-single-server.monitoring.svc.cluster.local:9428
   # See more examples with explanation at https://docs.victoriametrics.com/helm/victoria-logs-collector/#chart-configuration
   # - url: http://victoria-logs:9428
   # - url: http://victoria-logs:9428
@@ -112,12 +112,12 @@ env: []
   #       key: VL_PASSWORD
 
 resources:
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 # Advanced helm-chart configuration below, it is recommended to pass default parameters.
 
@@ -162,12 +162,12 @@ podSecurityContext:
 # -- Security context to be added to Pod's containers.
 securityContext:
   enabled: true
-  # capabilities:
-  #   drop:
-  #     - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
 
 # -- Extra Volumes for the Pod.
 extraVolumes: []
