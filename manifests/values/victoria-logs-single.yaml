@@ -495,14 +495,14 @@ extraObjects: []
 
 dashboards:
   # -- Create VictoriaLogs dashboards
-  enabled: false
+  enabled: true
   # -- Dashboard labels
   labels: {}
   #  grafana_dashboard: "1"
   # -- Dashboard annotations
   annotations: {}
   # -- Override default namespace, where to create dashboards
-  namespace: ""
+  namespace: "monitoring"
   grafanaOperator:
     enabled: false
     spec:
