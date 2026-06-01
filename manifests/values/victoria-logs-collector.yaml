@@ -162,12 +162,12 @@ podSecurityContext:
 # -- Security context to be added to Pod's containers.
 securityContext:
   enabled: true
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+  # capabilities:
+  #   drop:
+  #     - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 # -- Extra Volumes for the Pod.
 extraVolumes: []
