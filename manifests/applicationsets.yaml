@@ -7,11 +7,11 @@ spec:
   generators:
     - list:
         elements:
-          - chart: kube-prometheus-stack
-            repoURL: https://prometheus-community.github.io/helm-charts
-            version: 79.7.1
-            namespace: monitoring
-            releaseName: kube-prometheus-stack
+          # - chart: kube-prometheus-stack
+          #   repoURL: https://prometheus-community.github.io/helm-charts
+          #   version: 79.7.1
+          #   namespace: monitoring
+          #   releaseName: kube-prometheus-stack
           - chart: cloudnative-pg
             repoURL: https://cloudnative-pg.github.io/charts
             version: 0.27.1
@@ -37,6 +37,11 @@ spec:
             version: v1.20.2
             namespace: cert-manager
             releaseName: cert-manager
+          - chart: victoria-metrics-k8s-stack
+            repoURL: https://victoriametrics.github.io/helm-charts
+            version: 0.81.0
+            namespace: monitoring
+            releaseName: k8s-stack
   template:
     metadata:
       name: "{{chart}}"
@@ -63,6 +68,16 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
+          - RespectIgnoreDifferences=true
+        ignoreDifferences:
+          - kind: "Secret"
+            jsonPointers:
+              - /data/admin-password
+          - group: apps
+            kind: Deployment
+            jsonPointers:
+              - /spec/template/metadata/annotations/checksum~1secret
+
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet

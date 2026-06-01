@@ -1,0 +1,5 @@
+grafana:
+  enabled: true
+  persistence:
+    type: pvc
+    enabled: true
