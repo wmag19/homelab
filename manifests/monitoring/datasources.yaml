@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  labels:
+    grafana_datasource: "1"
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: VictoriaLogs
+        type: victoriametrics-logs-datasource
+        access: proxy
+        url: http://victorialogs.monitoring.svc.cluster.local:9428
+        isDefault: true
+        jsonData:
+          # Multitenancy settings, see https://docs.victoriametrics.com/victorialogs/#multitenancy
+          # to use the multitenancy, uncomment lines below: AccountID and ProjectID
+          multitenancyHeaders:
+            #AccountID: 0
+            #ProjectID: 0
