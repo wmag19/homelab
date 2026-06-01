@@ -13,5 +13,5 @@ spec:
       #   name: miniflux-postgres-secret
 
   storage:
-    size: 2Gi
+    size: 10Gi
     storageClass: synology-iscsi-retain
