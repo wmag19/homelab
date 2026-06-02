@@ -1067,9 +1067,20 @@ defaultDatasources:
 # -- Grafana dependency chart configuration. For possible values refer [here](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration)
 grafana:
   enabled: true
+  grafana.ini:
+    database:
+      url: $__file{/etc/secrets/pg_connectionstring} #type://user:password@host:port/name
+      #ssl_mode: disable
+
+  extraSecretMounts:
+    - name: fqdn-uri
+      secretName: grafana-postgres-app
+      defaultMode: 0644
+      mountPath: /etc/secrets/pg_connectionstring
+      readOnly: true
   persistence:
     type: pvc
-    enabled: true
+    enabled: false
   # all values for grafana helm chart can be specified here
   sidecar:
     datasources:
