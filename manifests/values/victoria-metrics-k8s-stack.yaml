@@ -1069,7 +1069,10 @@ grafana:
   enabled: true
   grafana.ini:
     database:
-      url: $__file{/etc/secrets/pg_connectionstring/fqdn-uri} #type://user:password@host:port/name
+      host: $__file{/etc/secrets/pg_connectionstring/host}
+      name: $__file{/etc/secrets/pg_connectionstring/dbname}
+      user: $__file{/etc/secrets/pg_connectionstring/username}
+      password: $__file{/etc/secrets/pg_connectionstring/password}
       #ssl_mode: disable
 
   extraSecretMounts:
