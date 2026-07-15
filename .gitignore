@@ -57,3 +57,7 @@ secrets
 secret*
 talosconfig
 key*
+
+# Talos reproducible configuration: retain only declarative inputs in Git.
+talos-config/secrets.yaml
+talos-config/generated/

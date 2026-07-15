@@ -39,6 +39,13 @@ This script runs the following steps:
 │ Use `talos_cluster_kubeconfig` resource instead. This data source will be removed in the next
 │ minor version of the provider.
 ```
-
+- Remove proxmox cloud init configuration - incompatible with Talos upgrades.
 ##Bootstrap:
 for v2 extend bootstrap script to include the install of external-secrets-operator with Azure SDK.
+
+## Upgrades:
+
+```bash
+talosctl upgrade --nodes 10.20.30.40 \
+  --image ghcr.io/siderolabs/installer:v1.13.6
+``
