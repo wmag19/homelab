@@ -1,0 +1,18 @@
+machine:
+  install:
+    disk: /dev/sda
+    image: ghcr.io/siderolabs/installer:v1.13.6
+  network:
+    interfaces:
+      - interface: ens18
+        dhcp: false
+        addresses:
+          - 192.168.1.62/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.254
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: talos-worker-02
+auto: off

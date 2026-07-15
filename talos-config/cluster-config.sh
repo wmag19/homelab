@@ -1,0 +1,6 @@
+CLUSTER_NAME="homelab"
+CLUSTER_ENDPOINT="https://192.168.1.51:6443"
+KUBERNETES_VERSION="1.35.0"
+TALOS_VERSION="v1.13"
+INSTALL_DISK="/dev/sda"
+INSTALL_IMAGE="ghcr.io/siderolabs/installer:v1.13.6"

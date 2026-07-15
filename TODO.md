@@ -1,0 +1,1 @@
+Grafana SSO - https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-authentication/entraid/#configure-the-entra-id-authentication-client-using-the-grafana-configuration-file

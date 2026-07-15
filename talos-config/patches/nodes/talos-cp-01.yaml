@@ -1,0 +1,17 @@
+machine:
+  network:
+    interfaces:
+      - interface: eth0
+        dhcp: false
+        addresses:
+          - 192.168.1.51/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.254
+        vip:
+          ip: 192.168.1.9
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: talos-cp-01
+auto: off

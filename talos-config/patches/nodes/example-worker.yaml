@@ -1,0 +1,16 @@
+# Copy this file to patches/nodes/<node-name>.yaml and set the node's address.
+machine:
+  network:
+    interfaces:
+      - interface: ens18
+        dhcp: false
+        addresses:
+          - 192.168.1.62/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.168.1.254
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: talos-worker-xx
+auto: off
