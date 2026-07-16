@@ -16,8 +16,6 @@ items:
       rbac.authorization.k8s.io/aggregate-to-edit: "true"
       rbac.authorization.k8s.io/aggregate-to-view: "true"
     name: system:aggregated-metrics-reader
-    resourceVersion: "13287407"
-    uid: 0919d7d4-46a4-4e13-bb08-43205047dc16
   rules:
   - apiGroups:
     - metrics.k8s.io
