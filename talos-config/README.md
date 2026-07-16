@@ -42,6 +42,8 @@ cp patches/nodes/example-worker.yaml patches/nodes/talos-worker-03.yaml
 ./generate-config.sh worker talos-worker-03
 ```
 
+The critical rule is: the boot ISO and  machine.install.image  must use the same schematic ID and Talos version. Do not use the stock installer image with a custom-extension ISO.
+
 When the VM enters maintenance mode, apply the generated configuration using
 the IP shown in its console:
 
@@ -69,4 +71,39 @@ patch.
 
 ```sh
 ./generate-config.sh controlplane talos-cp-01
+```
+
+## Installing iscis-tools
+
+Installing with a vanilla image 
+
+```bash
+curl -X POST https://factory.talos.dev/schematics \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customization": {
+      "systemExtensions": {
+        "officialExtensions": [
+          "siderolabs/iscsi-tools"
+        ]
+      }
+    }
+  }'
+```
+```bash
+talosctl -n 192.168.1.62 upgrade \
+  --image factory.talos.dev/installer/c9078f9419961640c712a8bf2bb9174933dfcf1da383fd8ea2b7dc21493f8bac:v1.13.6
+```
+
+## Making day 2 ops:
+
+```bash
+
+./talos-config/generate-config.sh worker talos-worker-02
+
+talosctl apply-config \
+  --nodes 192.168.1.62 \
+  --endpoints 192.168.1.51 \
+  --file talos-config/generated/talos-worker-02.yaml
+
 ```
