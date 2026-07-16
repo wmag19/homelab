@@ -18,3 +18,8 @@ apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: talos-cp-01
 auto: off
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+    - address: 192.168.1.1

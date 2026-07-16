@@ -6,6 +6,8 @@ machine:
     disk: /dev/sda
     image: ghcr.io/siderolabs/installer:v1.13.6
   network:
+    nameservers:
+      - 192.168.1.1
     interfaces:
       - interface: ens18
         dhcp: false
@@ -19,3 +21,8 @@ apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: talos-worker-02
 auto: off
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+    - address: 192.168.1.1
