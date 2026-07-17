@@ -9,6 +9,7 @@ data:
   proxmox.yaml: ""
   kubernetes.yaml: |
     mode: cluster
+    gateway: true
   settings.yaml: ""
   #settings.yaml: |
   #  providers:
@@ -22,17 +23,17 @@ data:
             - abbr: GH
               href: https://github.com/
   services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+    - Infra:
+        - ArgoCD:
+            icon: argo-cd.png
+            href: https://argocd.wcfm.me
 
-    - My Second Group:
+    - Services:
         - My Second Service:
             href: http://localhost/
             description: Homepage is the best
 
-    - My Third Group:
+    - Links:
         - My Third Service:
             href: http://localhost/
             description: Homepage is 😎
