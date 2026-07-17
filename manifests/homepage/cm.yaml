@@ -27,6 +27,9 @@ data:
         - ArgoCD:
             icon: argo-cd.png
             href: https://argocd.wcfm.me
+        - Grafana:
+            icon: grafana.png
+            href: https://grafana.wcfm.me
 
     - Services:
         - My Second Service:
