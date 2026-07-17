@@ -5,8 +5,8 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-  - name: traefik-gateway
-    namespace: traefik
+  - name: gateway-envoy
+    namespace: envoy-gateway
   hostnames:
   - argocd.wcfm.me
   rules:
