@@ -5,8 +5,9 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-  - name: gateway-envoy
-    namespace: envoy-gateway
+    - kind: ListenerSet
+      name: argocd
+      namespace: argocd
   hostnames:
   - argocd.wcfm.me
   rules:
