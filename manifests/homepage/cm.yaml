@@ -32,9 +32,9 @@ data:
             href: https://grafana.wcfm.me
 
     - Services:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
+        - Miniflux:
+            icon: miniflux.svg
+            href: https://miniflux.wcfm.me
 
     - Links:
         - My Third Service:
