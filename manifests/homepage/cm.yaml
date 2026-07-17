@@ -30,6 +30,9 @@ data:
         - Grafana:
             icon: grafana.png
             href: https://grafana.wcfm.me
+        - Proxmox:
+            icon: proxmox.png
+            href: https://pve1.home:8006/
 
     - Services:
         - Miniflux:
