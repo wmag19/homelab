@@ -17,12 +17,12 @@ spec:
   csi:
     driver: csi.san.synology.com
     volumeAttributes:
-      baseDir: /volume1/navidrome-music
+      baseDir: /volume1/pv-navidrome-music
       dsm: 192.168.1.136
       formatOptions: ""
       mountPermissions: "0770"
       protocol: smb
-      source: //192.168.1.136/navidrome-music
+      source: //192.168.1.136/pv-navidrome-music
     volumeHandle: 67421b35-f13f-4f86-9498-262a6573429f
   mountOptions:
   - nfsvers=4.0
