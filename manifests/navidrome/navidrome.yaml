@@ -30,7 +30,8 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: synology-nfs-retain
+  storageClassName: ""
+  volumeName: pv-navidrome-music
 ---
 apiVersion: apps/v1
 kind: Deployment
