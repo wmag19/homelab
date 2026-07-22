@@ -22,7 +22,7 @@ spec:
       source: //192.168.1.136/pv-navidrome-music
     nodeStageSecretRef:
       name: cifs-csi-credentials
-      namespace: synology
+      namespace: synology-csi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
