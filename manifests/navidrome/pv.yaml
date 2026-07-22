@@ -23,6 +23,7 @@ spec:
       mountPermissions: "0770"
       protocol: smb
       source: //192.168.1.136/navidrome-music
+    volumeHandle: 67421b35-f13f-4f86-9498-262a6573429f
   mountOptions:
   - nfsvers=4.0
   persistentVolumeReclaimPolicy: Retain
