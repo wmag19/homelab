@@ -19,20 +19,6 @@ spec:
       storage: 2Gi
   storageClassName: synology-nfs-retain
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: navidrome-music-pvc
-  namespace: navidrome
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: ""
-  volumeName: pv-navidrome-music
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

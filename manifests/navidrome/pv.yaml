@@ -1,21 +1,18 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  finalizers:
-  - kubernetes.io/pv-protection
   name: pv-navidrome-music
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteMany
   capacity:
     storage: 10Gi
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: pvc-navidrome-music
-    namespace: navidrome
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
   csi:
     driver: csi.san.synology.com
+    volumeHandle: 67421b35-f13f-4f86-9498-262a6573429f
     volumeAttributes:
       baseDir: /volume1/pv-navidrome-music
       dsm: 192.168.1.136
@@ -23,10 +20,20 @@ spec:
       mountPermissions: "0770"
       protocol: smb
       source: //192.168.1.136/pv-navidrome-music
-    volumeHandle: 67421b35-f13f-4f86-9498-262a6573429f
     nodeStageSecretRef:
       name: cifs-csi-credentials
       namespace: synology
-  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: navidrome-music-pvc
+  namespace: navidrome
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
   storageClassName: ""
-  volumeMode: Filesystem
+  volumeName: pv-navidrome-music
