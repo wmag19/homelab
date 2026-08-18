@@ -15,11 +15,12 @@ data:
   glance.yml: |-
     pages:
       - name: Home
-        # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
-        # hide-desktop-navigation: true
         columns:
           - size: small
             widgets:
+              - type: to-do
+
+
               - type: calendar
                 first-day-of-week: monday
 
@@ -37,15 +38,6 @@ data:
                   - url: https://samwho.dev/rss.xml
                   - url: https://ishadeed.com/feed.xml
                     title: Ahmad Shadeed
-
-              - type: twitch-channels
-                channels:
-                  - theprimeagen
-                  - j_blow
-                  - giantwaffle
-                  - cohhcarnage
-                  - christitustech
-                  - EJ_SA
 
           - size: full
             widgets:
@@ -103,21 +95,108 @@ data:
                   - go-gitea/gitea
                   - immich-app/immich
                   - syncthing/syncthing
+      - name: Startpage
+        width: slim
+        hide-desktop-navigation: false
+        center-vertically: true
+        columns:
+          - size: full
+            widgets:
+              - type: search
+                autofocus: true
+              - type: bookmarks
+                groups:
+                  - title: General
+                    links:
+                      - title: Google
+                        url: https://www.google.com/
 
-      # Add more pages here:
-      # - name: Your page name
-      #   columns:
-      #     - size: small
-      #       widgets:
-      #         # Add widgets here
+      - name: Markets
+        columns:
+          - size: small
+            widgets:
+              - type: markets
+                title: Indices
+                markets:
+                  - symbol: SPY
+                    name: S&P 500
+                  - symbol: DX-Y.NYB
+                    name: Dollar Index
 
-      #     - size: full
-      #       widgets:
-      #         # Add widgets here
+              - type: markets
+                title: Crypto
+                markets:
+                  - symbol: BTC-USD
+                    name: Bitcoin
+                  - symbol: ETH-USD
+                    name: Ethereum
 
-      #     - size: small
-      #       widgets:
-      #         # Add widgets here
+              - type: markets
+                title: Stocks
+                sort-by: absolute-change
+                markets:
+                  - symbol: NVDA
+                    name: NVIDIA
+                  - symbol: AAPL
+                    name: Apple
+                  - symbol: MSFT
+                    name: Microsoft
+                  - symbol: GOOGL
+                    name: Google
+                  - symbol: AMD
+                    name: AMD
+                  - symbol: RDDT
+                    name: Reddit
+                  - symbol: AMZN
+                    name: Amazon
+                  - symbol: TSLA
+                    name: Tesla
+                  - symbol: INTC
+                    name: Intel
+                  - symbol: META
+                    name: Meta
+
+          - size: full
+            widgets:
+              - type: rss
+                title: News
+                style: horizontal-cards
+                feeds:
+                  - url: https://feeds.bloomberg.com/markets/news.rss
+                    title: Bloomberg
+                  - url: https://moxie.foxbusiness.com/google-publisher/markets.xml
+                    title: Fox Business
+                  - url: https://moxie.foxbusiness.com/google-publisher/technology.xml
+                    title: Fox Business
+
+              - type: group
+                widgets:
+                  - type: reddit
+                    show-thumbnails: true
+                    subreddit: technology
+                  - type: reddit
+                    show-thumbnails: true
+                    subreddit: wallstreetbets
+
+              - type: videos
+                style: grid-cards
+                collapse-after-rows: 3
+                channels:
+                  - UCvSXMi2LebwJEM1s4bz5IBA # New Money
+                  - UCV6KDgJskWaEckne5aPA0aQ # Graham Stephan
+                  - UCAzhpt9DmG6PnHXjmJTvRGQ # Federal Reserve
+
+          - size: small
+            widgets:
+              - type: rss
+                title: News
+                limit: 30
+                collapse-after: 13
+                feeds:
+                  - url: https://www.ft.com/technology?format=rss
+                    title: Financial Times
+                  - url: https://feeds.a.dj.com/rss/RSSMarketsMain.xml
+                    title: Wall Street Journal
 ---
 apiVersion: apps/v1
 kind: Deployment
