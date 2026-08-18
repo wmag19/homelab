@@ -41,6 +41,8 @@ data:
 
           - size: full
             widgets:
+              - type: search
+                autofocus: true
               - type: group
                 widgets:
                   - type: hacker-news
