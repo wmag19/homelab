@@ -284,5 +284,5 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: glance
+    - name: glance-service
       port: 8080
